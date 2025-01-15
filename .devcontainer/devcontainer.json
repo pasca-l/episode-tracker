@@ -1,0 +1,16 @@
+{
+  "name": "VSCode Flutter development environment inside docker container",
+
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/home/local/",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dart-code.dart-code",
+        "dart-code.flutter"
+      ]
+    }
+  }
+}

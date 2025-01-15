@@ -1,0 +1,40 @@
+name: deploy "Flutter App" flutter project to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  app_root: ./app
+  repo_name: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout for workflow to access repository
+        uses: actions/checkout@v3
+
+      - name: get flutter sdk
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: install packages and test app
+        working-directory: ${{ env.app_root }}
+        run: |
+          flutter pub get
+          flutter test
+
+      - name: build for web
+        working-directory: ${{ env.app_root }}
+        run: |
+          flutter build web --base-href /${{ env.repo_name }}/
+
+      - name: deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.app_root }}/build/web
