@@ -1,1 +1,1 @@
-export 'package:app/features/tracker/views/index.dart';
+export 'package:app/features/tracker/index.dart';
