@@ -28,15 +28,28 @@ class Record {
   final List<String> related;
   final bool watched;
 
+  factory Record.newRecord() {
+    return Record(
+      uid: "",
+      title: "no title",
+      season: 1,
+      episode: 1,
+      airedFrom: DateTime(9999),
+      genre: List<String>.from([]),
+      related: List<String>.from([]),
+      watched: false,
+    );
+  }
+
   factory Record.fromFirestore(DocumentSnapshot doc) {
     var data = doc.data() as Map<String, dynamic>;
 
     return Record(
       uid: doc.id,
       title: data["title"] ?? "no title",
-      season: data["season"] ?? 0,
-      episode: data["episode"] ?? 0,
-      airedFrom: data["aired_from"].toDate() ?? DateTime(0),
+      season: data["season"] ?? 1,
+      episode: data["episode"] ?? 1,
+      airedFrom: data["aired_from"].toDate() ?? DateTime(9999),
       genre: List<String>.from(data["genre"] ?? []),
       related: List<String>.from(data["related"] ?? []),
       watched: data["watched"] ?? false,

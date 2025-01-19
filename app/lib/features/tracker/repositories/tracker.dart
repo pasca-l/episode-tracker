@@ -34,6 +34,27 @@ class TrackerRepository {
         .snapshots();
   }
 
+  static Future<void> addRecord(Tracker tracker) {
+    Record record = Record.newRecord();
+
+    return FirebaseFirestore.instance
+        .collection("trackers")
+        .doc(tracker.uid)
+        .collection("records")
+        .add({
+          "title": record.title,
+          "season": record.season,
+          "episode": record.episode,
+          "aired_from": Timestamp.fromDate(record.airedFrom),
+          "genre": record.genre,
+          "related": record.related,
+          "watched": record.watched,
+        })
+        .catchError(
+          (e) => throw Exception("failed to add record, with error: $e"),
+        );
+  }
+
   static Future<void> updateRecord(
     Tracker tracker,
     Record record, {
@@ -62,5 +83,20 @@ class TrackerRepository {
           "related": related ?? record.related,
           "watched": watched ?? record.watched,
         });
+  }
+
+  static Future<void> deleteRecord(Tracker tracker, Record record) {
+    return FirebaseFirestore.instance
+        .collection("trackers")
+        .doc(tracker.uid)
+        .collection("records")
+        .doc(record.uid)
+        .delete()
+        .catchError(
+          (e) =>
+              throw Exception(
+                "failed to delete record: ${record.uid}, with error: $e",
+              ),
+        );
   }
 }

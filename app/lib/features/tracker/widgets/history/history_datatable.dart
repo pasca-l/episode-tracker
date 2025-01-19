@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 
-class TrackerDatatable extends StatelessWidget {
-  const TrackerDatatable({
+class HistoryDatatable extends StatelessWidget {
+  const HistoryDatatable({
     super.key,
     required this.tracker,
     required this.records,
@@ -18,8 +18,12 @@ class TrackerDatatable extends StatelessWidget {
     return DataTable(
       columns: [
         DataColumn(label: Text("Title")),
-        DataColumn(label: Text("Next episode to watch"), numeric: true),
-        DataColumn(label: Text("Finished watching?")),
+        DataColumn(label: Text("Season"), numeric: true),
+        DataColumn(label: Text("Episode"), numeric: true),
+        DataColumn(label: Text("Aired from")),
+        DataColumn(label: Text("Genre")),
+        DataColumn(label: Text("Related")),
+        DataColumn(label: Text("Watched")),
       ],
       rows:
           records.map<DataRow>((record) {
@@ -27,12 +31,15 @@ class TrackerDatatable extends StatelessWidget {
               cells: [
                 DataCell(
                   Container(
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 1000),
+                    constraints: BoxConstraints(minWidth: 350),
                     child: Text(record.title),
                   ),
-                  onTap: () {},
                 ),
-                DataCell(Text((record.episode + 1).toString())),
+                DataCell(Text(record.season.toString())),
+                DataCell(Text(record.episode.toString())),
+                DataCell(Text(record.airedFrom.toString().substring(0, 10))),
+                DataCell(Text(record.genre.toString())),
+                DataCell(Text(record.related.toString())),
                 DataCell(
                   Center(
                     child: Checkbox(

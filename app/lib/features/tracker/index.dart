@@ -38,8 +38,8 @@ class TrackerPage extends StatelessWidget {
               return TabBarView(
                 children: [
                   TrackerChecklist(tracker: snapshot.data!),
+                  TrackerHistory(tracker: snapshot.data!),
                   const TrackerStats(),
-                  const TrackerHistory(),
                   const TrackerSettings(),
                 ],
               );
@@ -48,8 +48,8 @@ class TrackerPage extends StatelessWidget {
           bottomNavigationBar: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.checklist)),
-              Tab(icon: Icon(Icons.insights)),
               Tab(icon: Icon(Icons.history)),
+              Tab(icon: Icon(Icons.insights)),
               Tab(icon: Icon(Icons.settings)),
             ],
           ),

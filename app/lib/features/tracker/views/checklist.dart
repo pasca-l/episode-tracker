@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 
-import 'package:app/features/tracker/widgets/checklist/datatable.dart';
+import 'package:app/features/tracker/widgets/checklist/checklist_datatable.dart';
 
 class TrackerChecklist extends StatelessWidget {
-  TrackerChecklist({super.key, required this.tracker});
+  const TrackerChecklist({super.key, required this.tracker});
 
   final Tracker tracker;
-
-  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +40,17 @@ class TrackerChecklist extends StatelessWidget {
                       .toList() ??
                   [];
 
-              return TrackerDatatable(tracker: tracker, records: records);
+              return ChecklistDatatable(tracker: tracker, records: records);
             },
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "add record",
+        onPressed: () {
+          TrackerRepository.addRecord(tracker);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

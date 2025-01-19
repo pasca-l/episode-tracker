@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class TrackerSettings extends StatelessWidget {
   const TrackerSettings({super.key});
@@ -9,9 +8,7 @@ class TrackerSettings extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("Tracker Settings"),
-        ],
+        children: [const Text("Tracker Settings")],
       ),
     );
   }
