@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+// Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 
 class TrackerRepository {

@@ -1,13 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
-
 import 'package:app/features/tracker/views/checklist.dart';
 import 'package:app/features/tracker/views/history.dart';
-import 'package:app/features/tracker/views/stats.dart';
 import 'package:app/features/tracker/views/settings.dart';
+import 'package:app/features/tracker/views/stats.dart';
 
 class TrackerPage extends StatelessWidget {
   TrackerPage({super.key});

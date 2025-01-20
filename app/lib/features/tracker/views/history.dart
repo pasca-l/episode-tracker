@@ -1,9 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
-
 import 'package:app/features/tracker/widgets/history/history_datatable.dart';
 
 class TrackerHistory extends StatelessWidget {

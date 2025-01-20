@@ -1,9 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:firebase_core/firebase_core.dart';
 
-import 'firebase_options.dart';
-
+// Project imports:
 import 'package:app/features/tracker/importer.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
