@@ -1,6 +1,10 @@
+// Dart imports:
 import 'dart:async';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 
@@ -32,18 +36,12 @@ class ChecklistDialog extends StatefulWidget {
 }
 
 class _ChecklistDialogState extends State<ChecklistDialog> {
-  final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _controller;
   late Timer _timer;
-  bool _updateEnabled = false;
   bool _deleteEnabled = false;
 
   @override
   void initState() {
     super.initState();
-
-    // initialize the text shown for the textfield
-    _controller = TextEditingController(text: widget.record.title);
 
     // set timer to enable the button after some seconds
     _timer = Timer(Duration(seconds: 5), () {
@@ -56,65 +54,56 @@ class _ChecklistDialogState extends State<ChecklistDialog> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
     _timer.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      title: Column(
         children: [
-          Text("Record Information", style: TextStyle(fontSize: 18)),
-          IconButton(
-            tooltip: "close modal",
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.close),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Delete record?"),
+              IconButton(
+                tooltip: "close modal",
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.close),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Do you want to delete record for:"),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text("'${widget.record.title}'"),
+            ),
           ),
         ],
       ),
-      content: Form(
-        key: _formKey,
-        child: TextFormField(
-          controller: _controller,
-          decoration: InputDecoration(labelText: "Title"),
-          onChanged: (value) {
-            setState(() {
-              _updateEnabled = true;
-            });
-          },
-          validator: (val) {
-            if (val == null || val.isEmpty) {
-              return "Please enter some text";
-            }
-            return null;
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-        ),
-      ),
       actions: [
         TextButton(
-          onPressed:
-              _updateEnabled && _formKey.currentState!.validate()
-                  ? () {
-                    TrackerRepository.updateRecord(
-                      widget.tracker,
-                      widget.record,
-                      title: _controller.text,
-                    );
-                    Navigator.of(context).pop();
-                  }
-                  : null,
-          child: Text("update"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("cancel"),
         ),
         IconButton(
           tooltip: "delete this record",
           onPressed:
-              _deleteEnabled && !_updateEnabled
+              _deleteEnabled
                   ? () {
+                    // FIXME: when deleting a record, the text controller holds onto the previous data in the datatable
                     TrackerRepository.deleteRecord(
                       widget.tracker,
                       widget.record,
