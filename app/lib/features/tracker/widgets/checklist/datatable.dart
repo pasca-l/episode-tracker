@@ -25,19 +25,19 @@ class ChecklistDatatable extends StatelessWidget {
       child: DataTable(
         columns: [
           DataColumn(
-            label: Text("Title", style: TextStyle(fontWeight: FontWeight.w700)),
+            label: Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           // TODO: add onSort
           DataColumn(
             label: Text(
               "Next episode",
-              style: TextStyle(fontWeight: FontWeight.w700),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           DataColumn(
             label: Text(
               "Watched?",
-              style: TextStyle(fontWeight: FontWeight.w700),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ],

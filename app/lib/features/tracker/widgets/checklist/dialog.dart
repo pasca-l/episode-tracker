@@ -103,7 +103,6 @@ class _ChecklistDialogState extends State<ChecklistDialog> {
           onPressed:
               _deleteEnabled
                   ? () {
-                    // FIXME: when deleting a record, the text controller holds onto the previous data in the datatable
                     TrackerRepository.deleteRecord(
                       widget.tracker,
                       widget.record,
