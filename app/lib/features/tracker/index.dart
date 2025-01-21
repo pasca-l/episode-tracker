@@ -13,9 +13,9 @@ import 'package:app/features/tracker/views/settings.dart';
 import 'package:app/features/tracker/views/stats.dart';
 
 class TrackerPage extends StatelessWidget {
-  TrackerPage({super.key});
+  const TrackerPage({super.key, required this.user});
 
-  final user = FirebaseAuth.instance.currentUser;
+  final User? user;
 
   @override
   Widget build(BuildContext context) {
