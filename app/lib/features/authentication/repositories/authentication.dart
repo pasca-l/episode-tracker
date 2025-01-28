@@ -9,14 +9,10 @@ class AuthenticationRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        throw Exception("no user found for given email");
-      } else if (e.code == "user-disabled") {
-        throw Exception("user disabled for given email");
-      } else if (e.code == "wrong-password") {
-        throw Exception("wrong password provided for given email");
+      if (e.code == "invalid-credential") {
+        throw Exception("credential given is incorrect");
       } else {
-        throw Exception("some problem occured, with error: $e");
+        throw Exception("some problem occured, with error: ${e.message}");
       }
     }
   }
@@ -33,7 +29,7 @@ class AuthenticationRepository {
       } else if (e.code == "email-already-in-use") {
         throw Exception("the account already exists for given email");
       } else {
-        throw Exception("some problem occured, with error: $e");
+        throw Exception("some problem occured, with error: ${e.message}");
       }
     }
   }
@@ -42,7 +38,7 @@ class AuthenticationRepository {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw Exception("some problem occured, with error: $e");
+      throw Exception("some problem occured, with error: ${e.message}");
     }
   }
 }
