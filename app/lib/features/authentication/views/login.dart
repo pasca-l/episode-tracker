@@ -71,7 +71,7 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
                           icon: Icon(Icons.email),
                           labelText: "email",
                         ),
-                        onChanged: (val) {
+                        onChanged: (_) {
                           checkFormFill();
                         },
                         validator: (val) {
@@ -104,7 +104,7 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
                             },
                           ),
                         ),
-                        onChanged: (val) {
+                        onChanged: (_) {
                           checkFormFill();
                         },
                         validator: (val) {

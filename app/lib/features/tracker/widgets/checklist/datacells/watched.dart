@@ -20,7 +20,7 @@ class ChecklistWatchedDataCell extends StatelessWidget {
     return Center(
       child: Checkbox(
         value: record.watched,
-        onChanged: (bool? value) {
+        onChanged: (_) {
           TrackerRepository.updateRecord(
             tracker,
             record,

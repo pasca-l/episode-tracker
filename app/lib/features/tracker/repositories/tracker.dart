@@ -45,6 +45,8 @@ class TrackerRepository {
         .collection("records")
         .add({
           "title": record.title,
+          "title_pronunciation": record.titlePronunciation,
+          "title_english": record.titleEnglish,
           "season": record.season,
           "episode": record.episode,
           "aired_from": Timestamp.fromDate(record.airedFrom),
@@ -61,6 +63,8 @@ class TrackerRepository {
     Tracker tracker,
     Record record, {
     String? title,
+    String? titlePronunciation,
+    String? titleEnglish,
     int? season,
     int? episode,
     DateTime? airedFrom,
@@ -75,6 +79,9 @@ class TrackerRepository {
         .doc(record.uid)
         .update({
           "title": title ?? record.title,
+          "title_pronunciation":
+              titlePronunciation ?? record.titlePronunciation,
+          "title_english": titleEnglish ?? record.titleEnglish,
           "season": season ?? record.season,
           "episode": episode ?? record.episode,
           "aired_from":

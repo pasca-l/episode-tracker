@@ -12,6 +12,8 @@ class Record {
   const Record({
     required this.uid,
     required this.title,
+    required this.titlePronunciation,
+    required this.titleEnglish,
     required this.season,
     required this.episode,
     required this.airedFrom,
@@ -22,6 +24,8 @@ class Record {
 
   final String uid;
   final String title;
+  final String titlePronunciation;
+  final String titleEnglish;
   final int season;
   final int episode;
   final DateTime airedFrom;
@@ -33,6 +37,8 @@ class Record {
     return Record(
       uid: "",
       title: "no title",
+      titlePronunciation: "",
+      titleEnglish: "",
       season: 1,
       episode: 1,
       airedFrom: DateTime(9999),
@@ -48,6 +54,8 @@ class Record {
     return Record(
       uid: doc.id,
       title: data["title"] ?? "no title",
+      titlePronunciation: data["title_pronunciation"] ?? "",
+      titleEnglish: data["title_english"] ?? "",
       season: data["season"] ?? 1,
       episode: data["episode"] ?? 1,
       airedFrom: data["aired_from"].toDate() ?? DateTime(9999),

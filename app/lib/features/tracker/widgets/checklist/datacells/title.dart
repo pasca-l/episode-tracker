@@ -67,7 +67,7 @@ class _ChecklistTitleDataCellState extends State<ChecklistTitleDataCell> {
           hintText: "enter title",
           border: InputBorder.none,
         ),
-        onChanged: (val) {
+        onChanged: (_) {
           setState(() {
             _updateEnabled = true;
           });

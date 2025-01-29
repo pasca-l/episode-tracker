@@ -6,7 +6,6 @@ import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/widgets/checklist/datacells/episode.dart';
 import 'package:app/features/tracker/widgets/checklist/datacells/title.dart';
 import 'package:app/features/tracker/widgets/checklist/datacells/watched.dart';
-import 'package:app/features/tracker/widgets/checklist/dialog.dart';
 
 class ChecklistDatatable extends StatelessWidget {
   const ChecklistDatatable({
@@ -51,9 +50,6 @@ class ChecklistDatatable extends StatelessWidget {
                       tracker: tracker,
                       record: record,
                     ),
-                    onTap: () {
-                      showChecklistDialog(context, tracker, record);
-                    },
                   ),
                   DataCell(
                     ChecklistEpisodeDataCell(
