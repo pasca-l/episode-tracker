@@ -53,3 +53,4 @@ $ open app/ios/Runner.xcworkspace
 $ flutter run --release -d DEVICE_ID
 ```
 - for iOS 16 or later, the physical device requires to enable `Developer Mode`, which can be set under *Settings > Privacy & Security > Developer Mode*
+- to open the installed app, the app developer is required to be trusted, which can be set under *Settings > General > VPN & Device Management*

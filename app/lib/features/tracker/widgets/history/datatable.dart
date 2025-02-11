@@ -145,38 +145,37 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
           label: Text("Watched", style: TextStyle(fontWeight: FontWeight.bold)),
         ),
       ],
-      rows:
-          widget.records.map<DataRow>((record) {
-            return DataRow(
-              cells: [
-                DataCell(
-                  Container(
-                    constraints: BoxConstraints(minWidth: 300, maxWidth: 300),
-                    child: Text(record.title),
-                  ),
-                  onTap: () {
-                    widget.onRecordTap(record);
-                  },
+      rows: widget.records.map<DataRow>((record) {
+        return DataRow(
+          cells: [
+            DataCell(
+              Container(
+                constraints: BoxConstraints(minWidth: 300, maxWidth: 300),
+                child: Text(record.title),
+              ),
+              onTap: () {
+                widget.onRecordTap(record);
+              },
+            ),
+            DataCell(Text(record.titlePronunciation)),
+            DataCell(Text(record.titleEnglish)),
+            DataCell(Text(record.season.toString())),
+            DataCell(Text(record.episode.toString())),
+            DataCell(Text(record.airedFrom.toString().substring(0, 10))),
+            DataCell(Text(record.genre.toString())),
+            DataCell(Text(record.related.toString())),
+            DataCell(
+              Center(
+                child: Icon(
+                  record.watched
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
                 ),
-                DataCell(Text(record.titlePronunciation)),
-                DataCell(Text(record.titleEnglish)),
-                DataCell(Text(record.season.toString())),
-                DataCell(Text(record.episode.toString())),
-                DataCell(Text(record.airedFrom.toString().substring(0, 10))),
-                DataCell(Text(record.genre.toString())),
-                DataCell(Text(record.related.toString())),
-                DataCell(
-                  Center(
-                    child: Icon(
-                      record.watched
-                          ? Icons.check_box
-                          : Icons.check_box_outline_blank,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
+              ),
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 }

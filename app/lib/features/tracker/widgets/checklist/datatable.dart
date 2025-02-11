@@ -91,34 +91,33 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
             ),
           ),
         ],
-        rows:
-            widget.records.map<DataRow>((record) {
-              return DataRow(
-                cells: [
-                  DataCell(
-                    ChecklistTitleDataCell(
-                      key: Key(record.uid),
-                      tracker: widget.tracker,
-                      record: record,
-                    ),
-                  ),
-                  DataCell(
-                    ChecklistEpisodeDataCell(
-                      key: Key(record.uid),
-                      tracker: widget.tracker,
-                      record: record,
-                    ),
-                  ),
-                  DataCell(
-                    ChecklistWatchedDataCell(
-                      key: Key(record.uid),
-                      tracker: widget.tracker,
-                      record: record,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
+        rows: widget.records.map<DataRow>((record) {
+          return DataRow(
+            cells: [
+              DataCell(
+                ChecklistTitleDataCell(
+                  key: Key(record.uid),
+                  tracker: widget.tracker,
+                  record: record,
+                ),
+              ),
+              DataCell(
+                ChecklistEpisodeDataCell(
+                  key: Key(record.uid),
+                  tracker: widget.tracker,
+                  record: record,
+                ),
+              ),
+              DataCell(
+                ChecklistWatchedDataCell(
+                  key: Key(record.uid),
+                  tracker: widget.tracker,
+                  record: record,
+                ),
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
