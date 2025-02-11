@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:app/features/tracker/widgets/history/drawer.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -9,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/widgets/history/datatable.dart';
+import 'package:app/features/tracker/widgets/history/drawer.dart';
 
 class TrackerHistory extends StatefulWidget {
   const TrackerHistory({super.key, required this.tracker});
@@ -48,18 +48,22 @@ class _TrackerHistoryState extends State<TrackerHistory> {
                   [];
               records.sort((a, b) => b.airedFrom.compareTo(a.airedFrom));
 
-              return HistoryDatatable(
-                tracker: widget.tracker,
-                records: records,
-                onRecordTap: (record) {
-                  setState(() {
-                    _selectedRecord = record;
-                  });
-                  // ensures setState is completed before opening the drawer
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Scaffold.of(context).openEndDrawer();
-                  });
-                },
+              return Padding(
+                padding: EdgeInsets.all(20),
+                child: HistoryDatatable(
+                  tracker: widget.tracker,
+                  records: records,
+                  onRecordTap: (record) {
+                    setState(() {
+                      _selectedRecord = record;
+                    });
+
+                    // ensures setState is completed before opening the drawer
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Scaffold.of(context).openEndDrawer();
+                    });
+                  },
+                ),
               );
             },
           ),

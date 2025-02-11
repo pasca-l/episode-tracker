@@ -17,6 +17,14 @@ class AuthenticationRepository {
     }
   }
 
+  static Future<void> logOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw Exception("some problem occured, with error: ${e.message}");
+    }
+  }
+
   static Future<void> signUp(String email, String password) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(

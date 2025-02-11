@@ -19,6 +19,7 @@ class ChecklistEpisodeDataCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 10,
       children: [
         IconButton(
           icon: Icon(Icons.remove),
@@ -32,10 +33,7 @@ class ChecklistEpisodeDataCell extends StatelessWidget {
             }
           },
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Text((record.episode + 1).toString()),
-        ),
+        Text((record.episode + 1).toString()),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {

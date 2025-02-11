@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Project imports:
+import 'package:app/features/authentication/widgets/drawer.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/views/checklist.dart';
@@ -56,6 +57,7 @@ class TrackerPage extends StatelessWidget {
               Tab(icon: Icon(Icons.settings)),
             ],
           ),
+          drawer: AuthenticationDrawer(user: user),
         ),
       ),
     );

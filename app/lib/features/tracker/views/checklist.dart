@@ -41,9 +41,12 @@ class TrackerChecklist extends StatelessWidget {
                     .toList() ??
                 [];
 
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: ChecklistDatatable(tracker: tracker, records: records),
+            return Padding(
+              padding: EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: ChecklistDatatable(tracker: tracker, records: records),
+              ),
             );
           },
         ),

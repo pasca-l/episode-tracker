@@ -65,12 +65,11 @@ class HistoryDatatable extends StatelessWidget {
               cells: [
                 DataCell(
                   Container(
-                    constraints: BoxConstraints(minWidth: 350),
+                    constraints: BoxConstraints(minWidth: 300, maxWidth: 300),
                     child: Text(record.title),
                   ),
                   onTap: () {
                     onRecordTap(record);
-                    // showHistoryDialog(context, tracker, record);
                   },
                 ),
                 DataCell(Text(record.titlePronunciation)),
