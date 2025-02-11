@@ -28,5 +28,28 @@ $ docker compose exec app bash && make start
 $ (devcontainer) make start
 ```
 
-## Install onto local device
-To be determined...
+## Install onto local physical device (iOS)
+1. Install flutter, cocoapods, and xcode onto Mac (using Homebrew).
+```bash
+$ brew install --cask flutter
+$ brew install cocoapods
+
+# install xcode via mas, specifing app id
+$ brew install mas
+$ mas install 497799835 # xcode
+```
+
+2. Open `Runner.xcworkspace` on xcode, and set development team and bundle identifier.
+```bash
+$ open app/ios/Runner.xcworkspace
+```
+- xcode needs support for some iOS needs to be downloaded, in order to run the scheme
+- development team and bundle identifier can be updated at *Targets ("Runner") > Signing & Capabilities*
+
+3. Run the flutter app with the attached physical device.
+```bash
+# from iOS14+, the app cannot be opened from home in debug mode
+# `flutter devices` shows device ids
+$ flutter run --release -d DEVICE_ID
+```
+- for iOS 16 or later, the physical device requires to enable `Developer Mode`, which can be set under *Settings > Privacy & Security > Developer Mode*
