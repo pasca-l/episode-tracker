@@ -177,10 +177,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     onTap: () async {
                       DateTime? selected = await showDatePicker(
                         context: context,
-                        initialDate:
-                            widget.record.airedFrom.year == 9999
-                                ? DateTime.now()
-                                : widget.record.airedFrom,
+                        initialDate: widget.record.airedFrom,
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );

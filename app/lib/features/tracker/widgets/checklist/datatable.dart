@@ -7,7 +7,7 @@ import 'package:app/features/tracker/widgets/checklist/datacells/episode.dart';
 import 'package:app/features/tracker/widgets/checklist/datacells/title.dart';
 import 'package:app/features/tracker/widgets/checklist/datacells/watched.dart';
 
-class ChecklistDatatable extends StatelessWidget {
+class ChecklistDatatable extends StatefulWidget {
   const ChecklistDatatable({
     super.key,
     required this.tracker,
@@ -18,15 +18,60 @@ class ChecklistDatatable extends StatelessWidget {
   final List<Record> records;
 
   @override
+  State<ChecklistDatatable> createState() => _ChecklistDatatableState();
+}
+
+class _ChecklistDatatableState extends State<ChecklistDatatable> {
+  int _sortColumnIndex = 0;
+  bool _sortAscending = true;
+
+  void _onSortTitle(int columnIndex, bool ascending) {
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortAscending = ascending;
+      if (ascending) {
+        widget.records.sort(
+          (a, b) => a.titlePronunciation.compareTo(b.titlePronunciation),
+        );
+      } else {
+        widget.records.sort(
+          (a, b) => b.titlePronunciation.compareTo(a.titlePronunciation),
+        );
+      }
+    });
+  }
+
+  void _onSortEpisode(int columnIndex, bool ascending) {
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortAscending = ascending;
+      if (ascending) {
+        widget.records.sort((a, b) => a.episode.compareTo(b.episode));
+      } else {
+        widget.records.sort((a, b) => b.episode.compareTo(a.episode));
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
+        sortColumnIndex: _sortColumnIndex,
+        sortAscending: _sortAscending,
         columns: [
           DataColumn(
-            label: Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
+            label: Expanded(
+              child: Text(
+                "Title",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            onSort: (index, asc) {
+              _onSortTitle(index, asc);
+            },
           ),
-          // TODO: add onSort
           DataColumn(
             label: Expanded(
               child: Text(
@@ -35,6 +80,9 @@ class ChecklistDatatable extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            onSort: (index, asc) {
+              _onSortEpisode(index, asc);
+            },
           ),
           DataColumn(
             label: Text(
@@ -44,27 +92,27 @@ class ChecklistDatatable extends StatelessWidget {
           ),
         ],
         rows:
-            records.map<DataRow>((record) {
+            widget.records.map<DataRow>((record) {
               return DataRow(
                 cells: [
                   DataCell(
                     ChecklistTitleDataCell(
                       key: Key(record.uid),
-                      tracker: tracker,
+                      tracker: widget.tracker,
                       record: record,
                     ),
                   ),
                   DataCell(
                     ChecklistEpisodeDataCell(
                       key: Key(record.uid),
-                      tracker: tracker,
+                      tracker: widget.tracker,
                       record: record,
                     ),
                   ),
                   DataCell(
                     ChecklistWatchedDataCell(
                       key: Key(record.uid),
-                      tracker: tracker,
+                      tracker: widget.tracker,
                       record: record,
                     ),
                   ),
