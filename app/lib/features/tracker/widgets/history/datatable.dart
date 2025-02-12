@@ -69,9 +69,9 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
       if (ascending) {
-        widget.records.sort((a, b) => a.episode.compareTo(b.episode));
+        widget.records.sort((a, b) => a.episode.last.compareTo(b.episode.last));
       } else {
-        widget.records.sort((a, b) => b.episode.compareTo(a.episode));
+        widget.records.sort((a, b) => b.episode.last.compareTo(a.episode.last));
       }
     });
   }
@@ -89,93 +89,128 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // apply sort initially
+    _onSortTitle(_sortColumnIndex, _sortAscending);
+  }
+
+  @override
+  void didUpdateWidget(HistoryDatatable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // apply sort when refetching new data
+    _onSortTitle(_sortColumnIndex, _sortAscending);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DataTable(
-      sortColumnIndex: _sortColumnIndex,
-      sortAscending: _sortAscending,
-      columns: [
-        DataColumn(
-          label: Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
-          onSort: (index, asc) {
-            _onSortTitle(index, asc);
-          },
-        ),
-        DataColumn(
-          label: Text(
-            "Title pronunciation",
-            style: TextStyle(fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        sortColumnIndex: _sortColumnIndex,
+        sortAscending: _sortAscending,
+        columns: [
+          DataColumn(
+            label: Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
+            onSort: (index, asc) {
+              _onSortTitle(index, asc);
+            },
           ),
-        ),
-        DataColumn(
-          label: Text(
-            "Title in english",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onSort: (index, asc) {
-            _onSortTitleEnglish(index, asc);
-          },
-        ),
-        DataColumn(
-          label: Text("Season", style: TextStyle(fontWeight: FontWeight.bold)),
-          numeric: true,
-        ),
-        DataColumn(
-          label: Text("Episode", style: TextStyle(fontWeight: FontWeight.bold)),
-          numeric: true,
-          onSort: (index, asc) {
-            _onSortEpisode(index, asc);
-          },
-        ),
-        DataColumn(
-          label: Text(
-            "Aired from",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onSort: (index, asc) {
-            _onSortAiredFrom(index, asc);
-          },
-        ),
-        DataColumn(
-          label: Text("Genre", style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        DataColumn(
-          label: Text("Related", style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        DataColumn(
-          label: Text("Watched", style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-      ],
-      rows: widget.records.map<DataRow>((record) {
-        return DataRow(
-          cells: [
-            DataCell(
-              Container(
-                constraints: BoxConstraints(minWidth: 300, maxWidth: 300),
-                child: Text(record.title),
-              ),
-              onTap: () {
-                widget.onRecordTap(record);
-              },
+          DataColumn(
+            label: Text(
+              "Title pronunciation",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            DataCell(Text(record.titlePronunciation)),
-            DataCell(Text(record.titleEnglish)),
-            DataCell(Text(record.season.toString())),
-            DataCell(Text(record.episode.toString())),
-            DataCell(Text(record.airedFrom.toString().substring(0, 10))),
-            DataCell(Text(record.genre.toString())),
-            DataCell(Text(record.related.toString())),
-            DataCell(
-              Center(
-                child: Icon(
-                  record.watched
-                      ? Icons.check_box
-                      : Icons.check_box_outline_blank,
+          ),
+          DataColumn(
+            label: Text(
+              "Title in english",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            onSort: (index, asc) {
+              _onSortTitleEnglish(index, asc);
+            },
+          ),
+          DataColumn(
+            label: Text("Latest season",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            numeric: true,
+          ),
+          DataColumn(
+            label:
+                Text("Episode", style: TextStyle(fontWeight: FontWeight.bold)),
+            numeric: true,
+            onSort: (index, asc) {
+              _onSortEpisode(index, asc);
+            },
+          ),
+          DataColumn(
+            label: Text(
+              "Aired from",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            onSort: (index, asc) {
+              _onSortAiredFrom(index, asc);
+            },
+          ),
+          DataColumn(
+            label: Text("Genre", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          DataColumn(
+            label:
+                Text("Related", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          DataColumn(
+            label:
+                Text("Watched", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+        rows: widget.records.map<DataRow>((record) {
+          return DataRow(
+            cells: [
+              DataCell(
+                Container(
+                  constraints: BoxConstraints(minWidth: 300, maxWidth: 300),
+                  child: Text(record.title),
+                ),
+                onTap: () {
+                  widget.onRecordTap(record);
+                },
+              ),
+              DataCell(Container(
+                  constraints: BoxConstraints(maxWidth: 300),
+                  child: Text(
+                    record.titlePronunciation,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ))),
+              DataCell(Container(
+                  constraints: BoxConstraints(maxWidth: 300),
+                  child: Text(
+                    record.titleEnglish,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ))),
+              DataCell(Text(record.episode.length.toString())),
+              DataCell(Text(record.episode.last.toString())),
+              DataCell(Text(record.airedFrom.toString().substring(0, 10))),
+              DataCell(Text(record.genre.toString())),
+              DataCell(Text(record.related.toString())),
+              DataCell(
+                Center(
+                  child: Icon(
+                    record.watched
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      }).toList(),
+            ],
+          );
+        }).toList(),
+      ),
     );
   }
 }

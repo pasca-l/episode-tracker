@@ -41,8 +41,7 @@ class _TrackerHistoryState extends State<TrackerHistory> {
                 return Center(child: Text("Error: ${snapshot.error}"));
               }
 
-              final List<Record> records =
-                  snapshot.data?.docs.map((doc) {
+              final List<Record> records = snapshot.data?.docs.map((doc) {
                     return Record.fromFirestore(doc);
                   }).toList() ??
                   [];
@@ -50,29 +49,31 @@ class _TrackerHistoryState extends State<TrackerHistory> {
 
               return Padding(
                 padding: EdgeInsets.all(20),
-                child: HistoryDatatable(
-                  tracker: widget.tracker,
-                  records: records,
-                  onRecordTap: (record) {
-                    setState(() {
-                      _selectedRecord = record;
-                    });
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: HistoryDatatable(
+                    tracker: widget.tracker,
+                    records: records,
+                    onRecordTap: (record) {
+                      setState(() {
+                        _selectedRecord = record;
+                      });
 
-                    // ensures setState is completed before opening the drawer
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Scaffold.of(context).openEndDrawer();
-                    });
-                  },
+                      // ensures setState is completed before opening the drawer
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Scaffold.of(context).openEndDrawer();
+                      });
+                    },
+                  ),
                 ),
               );
             },
           ),
         ),
       ),
-      endDrawer:
-          _selectedRecord != null
-              ? HistoryDrawer(tracker: widget.tracker, record: _selectedRecord!)
-              : null,
+      endDrawer: _selectedRecord != null
+          ? HistoryDrawer(tracker: widget.tracker, record: _selectedRecord!)
+          : null,
       floatingActionButton: FloatingActionButton(
         tooltip: "add record",
         onPressed: () {

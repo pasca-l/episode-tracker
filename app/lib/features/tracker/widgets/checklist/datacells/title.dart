@@ -59,10 +59,11 @@ class _ChecklistTitleDataCellState extends State<ChecklistTitleDataCell> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(minWidth: 150, maxWidth: 150),
+      constraints: BoxConstraints(minWidth: 200, maxWidth: 200),
       child: TextFormField(
         controller: _controller,
         focusNode: _focus,
+        style: TextStyle(fontSize: 14),
         decoration: InputDecoration(
           hintText: "enter title",
           border: InputBorder.none,

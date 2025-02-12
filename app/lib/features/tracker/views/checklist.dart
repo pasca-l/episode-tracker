@@ -32,8 +32,7 @@ class TrackerChecklist extends StatelessWidget {
             }
 
             // only show records that is not fully watched
-            final List<Record> records =
-                snapshot.data?.docs
+            final List<Record> records = snapshot.data?.docs
                     .map((doc) {
                       return Record.fromFirestore(doc);
                     })
@@ -50,13 +49,6 @@ class TrackerChecklist extends StatelessWidget {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: "add record",
-        onPressed: () {
-          TrackerRepository.addRecord(tracker);
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
