@@ -38,8 +38,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
         text: widget.record.titlePronunciation,
       ),
       "title_english": TextEditingController(text: widget.record.titleEnglish),
-      "season": TextEditingController(text: widget.record.season.toString()),
-      "episode": TextEditingController(text: widget.record.episode.toString()),
+      "episode":
+          TextEditingController(text: widget.record.episode.last.toString()),
       "aired_from": TextEditingController(
         text: widget.record.airedFrom.toString().substring(0, 10),
       ),
@@ -131,26 +131,6 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     },
                   ),
                   TextFormField(
-                    controller: _controllers["season"],
-                    decoration: InputDecoration(labelText: "Season"),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onChanged: (_) {
-                      setState(() {
-                        _updateEnabled = true;
-                      });
-                    },
-                    validator: (val) {
-                      if (val == null || val.isEmpty) {
-                        return "Please enter some number";
-                      } else if (int.parse(val) > 100) {
-                        return "Number may be too large";
-                      }
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                  ),
-                  TextFormField(
                     controller: _controllers["episode"],
                     decoration: InputDecoration(labelText: "Episode"),
                     keyboardType: TextInputType.number,
@@ -182,9 +162,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                         lastDate: DateTime(2100),
                       );
                       if (selected != null) {
-                        _controllers["aired_from"]!.text = selected
-                            .toString()
-                            .substring(0, 10);
+                        _controllers["aired_from"]!.text =
+                            selected.toString().substring(0, 10);
                         setState(() {
                           _updateEnabled = true;
                         });
@@ -209,40 +188,38 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed:
-                      _updateEnabled && _formKey.currentState!.validate()
-                          ? () {
-                            TrackerRepository.updateRecord(
-                              widget.tracker,
-                              widget.record,
-                              title: _controllers["title"]!.text,
-                              titlePronunciation:
-                                  _controllers["title_pronunciation"]!.text,
-                              titleEnglish: _controllers["title_english"]!.text,
-                              season: int.parse(_controllers["season"]!.text),
-                              episode: int.parse(_controllers["episode"]!.text),
-                              airedFrom: DateTime.parse(
-                                _controllers["aired_from"]!.text,
-                              ),
-                              watched: _isChecked,
-                            );
-                            Navigator.of(context).pop();
-                          }
-                          : null,
+                  onPressed: _updateEnabled && _formKey.currentState!.validate()
+                      ? () {
+                          TrackerRepository.updateRecord(
+                            widget.tracker,
+                            widget.record,
+                            title: _controllers["title"]!.text,
+                            titlePronunciation:
+                                _controllers["title_pronunciation"]!.text,
+                            titleEnglish: _controllers["title_english"]!.text,
+                            episode: List<int>.from(
+                                [int.parse(_controllers["episode"]!.text)]),
+                            airedFrom: DateTime.parse(
+                              _controllers["aired_from"]!.text,
+                            ),
+                            watched: _isChecked,
+                          );
+                          Navigator.of(context).pop();
+                        }
+                      : null,
                   child: Text("update"),
                 ),
                 IconButton(
                   tooltip: "delete this record",
-                  onPressed:
-                      _deleteEnabled && !_updateEnabled
-                          ? () {
-                            TrackerRepository.deleteRecord(
-                              widget.tracker,
-                              widget.record,
-                            );
-                            Navigator.of(context).pop();
-                          }
-                          : null,
+                  onPressed: _deleteEnabled && !_updateEnabled
+                      ? () {
+                          TrackerRepository.deleteRecord(
+                            widget.tracker,
+                            widget.record,
+                          );
+                          Navigator.of(context).pop();
+                        }
+                      : null,
                   icon: Icon(Icons.delete),
                 ),
               ],

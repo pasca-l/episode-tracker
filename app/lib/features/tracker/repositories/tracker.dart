@@ -47,7 +47,6 @@ class TrackerRepository {
           "title": record.title,
           "title_pronunciation": record.titlePronunciation,
           "title_english": record.titleEnglish,
-          "season": record.season,
           "episode": record.episode,
           "aired_from": Timestamp.fromDate(record.airedFrom),
           "genre": record.genre,
@@ -65,8 +64,7 @@ class TrackerRepository {
     String? title,
     String? titlePronunciation,
     String? titleEnglish,
-    int? season,
-    int? episode,
+    List<int>? episode,
     DateTime? airedFrom,
     List<String>? genre,
     List<String>? related,
@@ -82,7 +80,6 @@ class TrackerRepository {
           "title_pronunciation":
               titlePronunciation ?? record.titlePronunciation,
           "title_english": titleEnglish ?? record.titleEnglish,
-          "season": season ?? record.season,
           "episode": episode ?? record.episode,
           "aired_from":
               airedFrom != null

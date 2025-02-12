@@ -24,23 +24,29 @@ class ChecklistEpisodeDataCell extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.remove),
           onPressed: () {
-            if (record.episode > 1) {
+            if (record.episode.last > 1) {
               TrackerRepository.updateRecord(
                 tracker,
                 record,
-                episode: record.episode - 1,
+                episode: [
+                  ...record.episode.sublist(0, record.episode.length -1),
+                  record.episode.last - 1
+                ],
               );
             }
           },
         ),
-        Text((record.episode + 1).toString()),
+        Text((record.episode.last + 1).toString()),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {
             TrackerRepository.updateRecord(
               tracker,
               record,
-              episode: record.episode + 1,
+              episode: [
+                ...record.episode.sublist(0, record.episode.length -1),
+                record.episode.last + 1
+              ],
             );
           },
         ),

@@ -14,7 +14,6 @@ class Record {
     required this.title,
     required this.titlePronunciation,
     required this.titleEnglish,
-    required this.season,
     required this.episode,
     required this.airedFrom,
     required this.genre,
@@ -26,8 +25,7 @@ class Record {
   final String title;
   final String titlePronunciation;
   final String titleEnglish;
-  final int season;
-  final int episode;
+  final List<int> episode;
   final DateTime airedFrom;
   final List<String> genre;
   final List<String> related;
@@ -39,8 +37,7 @@ class Record {
       title: "no title",
       titlePronunciation: "",
       titleEnglish: "",
-      season: 1,
-      episode: 1,
+      episode: List<int>.from([1]),
       airedFrom: DateTime.now(),
       genre: List<String>.from([]),
       related: List<String>.from([]),
@@ -56,8 +53,7 @@ class Record {
       title: data["title"] ?? "no title",
       titlePronunciation: data["title_pronunciation"] ?? "",
       titleEnglish: data["title_english"] ?? "",
-      season: data["season"] ?? 1,
-      episode: data["episode"] ?? 1,
+      episode: List<int>.from(data["episode"] ?? [1]),
       airedFrom: data["aired_from"].toDate() ?? DateTime.now(),
       genre: List<String>.from(data["genre"] ?? []),
       related: List<String>.from(data["related"] ?? []),
