@@ -11,11 +11,11 @@ class TrackerRepository {
       throw Exception("user is null");
     }
 
-    final QuerySnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance
-            .collection("trackers")
-            .where("owner", isEqualTo: user.uid)
-            .get();
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection("trackers")
+        .where("owner", isEqualTo: user.uid)
+        .get();
 
     if (snapshot.docs.isNotEmpty) {
       // takes first document, because only one should be available
@@ -44,18 +44,18 @@ class TrackerRepository {
         .doc(tracker.uid)
         .collection("records")
         .add({
-          "title": record.title,
-          "title_pronunciation": record.titlePronunciation,
-          "title_english": record.titleEnglish,
-          "episode": record.episode,
-          "aired_from": Timestamp.fromDate(record.airedFrom),
-          "genre": record.genre,
-          "related": record.related,
-          "watched": record.watched,
-        })
-        .catchError(
-          (e) => throw Exception("failed to add record, with error: $e"),
-        );
+      "title": record.title,
+      "title_pronunciation": record.titlePronunciation,
+      "title_english": record.titleEnglish,
+      "episode": record.episode,
+      "aired_from":
+          record.airedFrom.map((date) => Timestamp.fromDate(date)).toList(),
+      "genre": record.genre,
+      "related": record.related,
+      "watched": record.watched,
+    }).catchError(
+      (e) => throw Exception("failed to add record, with error: $e"),
+    );
   }
 
   static Future<void> updateRecord(
@@ -65,7 +65,7 @@ class TrackerRepository {
     String? titlePronunciation,
     String? titleEnglish,
     List<int>? episode,
-    DateTime? airedFrom,
+    List<DateTime>? airedFrom,
     List<String>? genre,
     List<String>? related,
     bool? watched,
@@ -76,19 +76,16 @@ class TrackerRepository {
         .collection("records")
         .doc(record.uid)
         .update({
-          "title": title ?? record.title,
-          "title_pronunciation":
-              titlePronunciation ?? record.titlePronunciation,
-          "title_english": titleEnglish ?? record.titleEnglish,
-          "episode": episode ?? record.episode,
-          "aired_from":
-              airedFrom != null
-                  ? Timestamp.fromDate(airedFrom)
-                  : Timestamp.fromDate(record.airedFrom),
-          "genre": genre ?? record.genre,
-          "related": related ?? record.related,
-          "watched": watched ?? record.watched,
-        });
+      "title": title ?? record.title,
+      "title_pronunciation": titlePronunciation ?? record.titlePronunciation,
+      "title_english": titleEnglish ?? record.titleEnglish,
+      "episode": episode ?? record.episode,
+      "aired_from": airedFrom ??
+          record.airedFrom.map((date) => Timestamp.fromDate(date)).toList(),
+      "genre": genre ?? record.genre,
+      "related": related ?? record.related,
+      "watched": watched ?? record.watched,
+    });
   }
 
   static Future<void> deleteRecord(Tracker tracker, Record record) {
@@ -99,10 +96,9 @@ class TrackerRepository {
         .doc(record.uid)
         .delete()
         .catchError(
-          (e) =>
-              throw Exception(
-                "failed to delete record: ${record.uid}, with error: $e",
-              ),
+          (e) => throw Exception(
+            "failed to delete record: ${record.uid}, with error: $e",
+          ),
         );
   }
 }

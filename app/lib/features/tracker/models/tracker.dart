@@ -26,7 +26,7 @@ class Record {
   final String titlePronunciation;
   final String titleEnglish;
   final List<int> episode;
-  final DateTime airedFrom;
+  final List<DateTime> airedFrom;
   final List<String> genre;
   final List<String> related;
   final bool watched;
@@ -38,7 +38,7 @@ class Record {
       titlePronunciation: "",
       titleEnglish: "",
       episode: List<int>.from([1]),
-      airedFrom: DateTime.now(),
+      airedFrom: List<DateTime>.from([DateTime.now()]),
       genre: List<String>.from([]),
       related: List<String>.from([]),
       watched: false,
@@ -54,7 +54,8 @@ class Record {
       titlePronunciation: data["title_pronunciation"] ?? "",
       titleEnglish: data["title_english"] ?? "",
       episode: List<int>.from(data["episode"] ?? [1]),
-      airedFrom: data["aired_from"].toDate() ?? DateTime.now(),
+      airedFrom: List<DateTime>.from(
+          data["aired_from"].map((date) => date.toDate()) ?? [DateTime.now()]),
       genre: List<String>.from(data["genre"] ?? []),
       related: List<String>.from(data["related"] ?? []),
       watched: data["watched"] ?? false,

@@ -81,9 +81,11 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
       if (ascending) {
-        widget.records.sort((a, b) => a.airedFrom.compareTo(b.airedFrom));
+        widget.records
+            .sort((a, b) => a.airedFrom.last.compareTo(b.airedFrom.last));
       } else {
-        widget.records.sort((a, b) => b.airedFrom.compareTo(a.airedFrom));
+        widget.records
+            .sort((a, b) => b.airedFrom.last.compareTo(a.airedFrom.last));
       }
     });
   }
@@ -195,7 +197,7 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
                   ))),
               DataCell(Text(record.episode.length.toString())),
               DataCell(Text(record.episode.last.toString())),
-              DataCell(Text(record.airedFrom.toString().substring(0, 10))),
+              DataCell(Text(record.airedFrom.last.toString().substring(0, 10))),
               DataCell(Text(record.genre.toString())),
               DataCell(Text(record.related.toString())),
               DataCell(

@@ -41,7 +41,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
       "episode":
           TextEditingController(text: widget.record.episode.last.toString()),
       "aired_from": TextEditingController(
-        text: widget.record.airedFrom.toString().substring(0, 10),
+        text: widget.record.airedFrom.last.toString().substring(0, 10),
       ),
     };
     _isChecked = widget.record.watched;
@@ -157,7 +157,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     onTap: () async {
                       DateTime? selected = await showDatePicker(
                         context: context,
-                        initialDate: widget.record.airedFrom,
+                        initialDate: widget.record.airedFrom.last,
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );
@@ -197,11 +197,19 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             titlePronunciation:
                                 _controllers["title_pronunciation"]!.text,
                             titleEnglish: _controllers["title_english"]!.text,
-                            episode: List<int>.from(
-                                [int.parse(_controllers["episode"]!.text)]),
-                            airedFrom: DateTime.parse(
-                              _controllers["aired_from"]!.text,
-                            ),
+                            // FIXME: should update number at the correct index
+                            episode: [
+                              ...widget.record.episode
+                                  .sublist(0, widget.record.episode.length - 1),
+                              int.parse(_controllers["episode"]!.text)
+                            ],
+                            airedFrom: [
+                              ...widget.record.airedFrom.sublist(
+                                  0, widget.record.airedFrom.length - 1),
+                              DateTime.parse(
+                                _controllers["aired_from"]!.text,
+                              )
+                            ],
                             watched: _isChecked,
                           );
                           Navigator.of(context).pop();

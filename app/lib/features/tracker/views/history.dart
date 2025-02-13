@@ -45,7 +45,6 @@ class _TrackerHistoryState extends State<TrackerHistory> {
                     return Record.fromFirestore(doc);
                   }).toList() ??
                   [];
-              records.sort((a, b) => b.airedFrom.compareTo(a.airedFrom));
 
               return Padding(
                 padding: EdgeInsets.all(20),
