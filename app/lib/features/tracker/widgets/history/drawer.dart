@@ -22,14 +22,18 @@ class HistoryDrawer extends StatefulWidget {
 class _HistoryDrawerState extends State<HistoryDrawer> {
   final _formKey = GlobalKey<FormState>();
   late final Map<String, TextEditingController> _controllers;
-  bool _isChecked = false;
   late Timer _timer;
+  late int _seasonIndex;
+
+  bool _isChecked = false;
   bool _updateEnabled = false;
   bool _deleteEnabled = false;
 
   @override
   void initState() {
     super.initState();
+
+    _seasonIndex = widget.record.episode.length - 1;
 
     // initialize with read data
     _controllers = {
@@ -38,10 +42,10 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
         text: widget.record.titlePronunciation,
       ),
       "title_english": TextEditingController(text: widget.record.titleEnglish),
-      "episode":
-          TextEditingController(text: widget.record.episode.last.toString()),
+      "episode": TextEditingController(
+          text: widget.record.episode[_seasonIndex].toString()),
       "aired_from": TextEditingController(
-        text: widget.record.airedFrom.last.toString().substring(0, 10),
+        text: widget.record.airedFrom[_seasonIndex].toString().substring(0, 10),
       ),
     };
     _isChecked = widget.record.watched;
@@ -130,6 +134,28 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                       });
                     },
                   ),
+                  Wrap(
+                    spacing: 5,
+                    runSpacing: 5,
+                    children: List<Widget>.generate(
+                        widget.record.episode.length, (int index) {
+                      return ChoiceChip(
+                        label: Text("season ${index + 1}"),
+                        selected: _seasonIndex == index,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            _seasonIndex = index;
+                            _controllers["episode"]!.text =
+                                widget.record.episode[_seasonIndex].toString();
+                            _controllers["aired_from"]!.text = widget
+                                .record.airedFrom[_seasonIndex]
+                                .toString()
+                                .substring(0, 10);
+                          });
+                        },
+                      );
+                    }),
+                  ),
                   TextFormField(
                     controller: _controllers["episode"],
                     decoration: InputDecoration(labelText: "Episode"),
@@ -197,18 +223,20 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             titlePronunciation:
                                 _controllers["title_pronunciation"]!.text,
                             titleEnglish: _controllers["title_english"]!.text,
-                            // FIXME: should update number at the correct index
                             episode: [
+                              ...widget.record.episode.sublist(0, _seasonIndex),
+                              int.parse(_controllers["episode"]!.text),
                               ...widget.record.episode
-                                  .sublist(0, widget.record.episode.length - 1),
-                              int.parse(_controllers["episode"]!.text)
+                                  .sublist(_seasonIndex + 1),
                             ],
                             airedFrom: [
-                              ...widget.record.airedFrom.sublist(
-                                  0, widget.record.airedFrom.length - 1),
+                              ...widget.record.airedFrom
+                                  .sublist(0, _seasonIndex),
                               DateTime.parse(
                                 _controllers["aired_from"]!.text,
-                              )
+                              ),
+                              ...widget.record.airedFrom
+                                  .sublist(_seasonIndex + 1),
                             ],
                             watched: _isChecked,
                           );
