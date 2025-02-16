@@ -24,8 +24,7 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
   bool _isFormFilled = false;
   void checkFormFill() {
     setState(() {
-      _isFormFilled =
-          _controllers["email"]!.text.isNotEmpty &&
+      _isFormFilled = _controllers["email"]!.text.isNotEmpty &&
           _controllers["password"]!.text.isNotEmpty;
     });
   }
@@ -119,53 +118,76 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed:
-                      _isFormFilled
-                          ? () async {
-                            if (_formKey.currentState!.validate()) {
-                              try {
-                                await AuthenticationRepository.logIn(
-                                  _controllers["email"]!.text.trim(),
-                                  _controllers["password"]!.text.trim(),
-                                );
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(
-                                    context,
-                                  ).clearSnackBars();
-                                }
-                              } catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      duration: Duration(days: 1),
-                                      action: SnackBarAction(
-                                        label: 'Dismiss',
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).hideCurrentSnackBar();
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Please check the inputs"),
-                                  duration: Duration(seconds: 3),
-                                ),
+                  onPressed: _isFormFilled
+                      ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              await AuthenticationRepository.logIn(
+                                _controllers["email"]!.text.trim(),
+                                _controllers["password"]!.text.trim(),
                               );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).clearSnackBars();
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(e.toString()),
+                                    duration: Duration(days: 1),
+                                    action: SnackBarAction(
+                                      label: 'Dismiss',
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).hideCurrentSnackBar();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
                             }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Please check the inputs"),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
                           }
-                          : null,
+                        }
+                      : null,
                   child: Text("login"),
                 ),
                 Divider(),
-                ElevatedButton(onPressed: null, child: Text("Google signin")),
+                ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await AuthenticationRepository.logInWithGoogle();
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.toString()),
+                              duration: Duration(days: 1),
+                              action: SnackBarAction(
+                                label: 'Dismiss',
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Text("Google signin")),
               ],
             ),
           ),
