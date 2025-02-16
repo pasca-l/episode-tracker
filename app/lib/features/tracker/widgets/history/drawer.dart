@@ -24,6 +24,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
   late final Map<String, TextEditingController> _controllers;
   late Timer _timer;
   late int _seasonIndex;
+  late MutableRecord _currentRecord;
 
   bool _isChecked = false;
   bool _updateEnabled = false;
@@ -33,6 +34,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
   void initState() {
     super.initState();
 
+    _currentRecord = widget.record.toMutableRecord();
     _seasonIndex = widget.record.episode.length - 1;
 
     // initialize with read data
@@ -134,27 +136,49 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                       });
                     },
                   ),
-                  Wrap(
-                    spacing: 5,
-                    runSpacing: 5,
-                    children: List<Widget>.generate(
-                        widget.record.episode.length, (int index) {
-                      return ChoiceChip(
-                        label: Text("season ${index + 1}"),
-                        selected: _seasonIndex == index,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            _seasonIndex = index;
-                            _controllers["episode"]!.text =
-                                widget.record.episode[_seasonIndex].toString();
-                            _controllers["aired_from"]!.text = widget
-                                .record.airedFrom[_seasonIndex]
-                                .toString()
-                                .substring(0, 10);
-                          });
-                        },
-                      );
-                    }),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      spacing: 5,
+                      children: List<Widget>.generate(
+                          _currentRecord.episode.length + 1, (int index) {
+                        if (index == _currentRecord.episode.length) {
+                          return ActionChip(
+                            label: Text("add season"),
+                            avatar: Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                _currentRecord.episode = [
+                                  ..._currentRecord.episode,
+                                  1
+                                ];
+                                _currentRecord.airedFrom = [
+                                  ..._currentRecord.airedFrom,
+                                  DateTime.now()
+                                ];
+                                _updateEnabled = true;
+                              });
+                            },
+                          );
+                        }
+                        return ChoiceChip(
+                          label: Text("season ${index + 1}"),
+                          selected: _seasonIndex == index,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              _seasonIndex = index;
+                              _controllers["episode"]!.text = _currentRecord
+                                  .episode[_seasonIndex]
+                                  .toString();
+                              _controllers["aired_from"]!.text = _currentRecord
+                                  .airedFrom[_seasonIndex]
+                                  .toString()
+                                  .substring(0, 10);
+                            });
+                          },
+                        );
+                      }),
+                    ),
                   ),
                   TextFormField(
                     controller: _controllers["episode"],
@@ -183,7 +207,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     onTap: () async {
                       DateTime? selected = await showDatePicker(
                         context: context,
-                        initialDate: widget.record.airedFrom.last,
+                        initialDate: _currentRecord.airedFrom.last,
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );
@@ -224,18 +248,19 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                                 _controllers["title_pronunciation"]!.text,
                             titleEnglish: _controllers["title_english"]!.text,
                             episode: [
-                              ...widget.record.episode.sublist(0, _seasonIndex),
+                              ..._currentRecord.episode
+                                  .sublist(0, _seasonIndex),
                               int.parse(_controllers["episode"]!.text),
-                              ...widget.record.episode
+                              ..._currentRecord.episode
                                   .sublist(_seasonIndex + 1),
                             ],
                             airedFrom: [
-                              ...widget.record.airedFrom
+                              ..._currentRecord.airedFrom
                                   .sublist(0, _seasonIndex),
                               DateTime.parse(
                                 _controllers["aired_from"]!.text,
                               ),
-                              ...widget.record.airedFrom
+                              ..._currentRecord.airedFrom
                                   .sublist(_seasonIndex + 1),
                             ],
                             watched: _isChecked,

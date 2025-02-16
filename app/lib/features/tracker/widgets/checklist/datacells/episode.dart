@@ -25,11 +25,15 @@ class ChecklistEpisodeDataCell extends StatelessWidget {
           icon: Icon(Icons.remove),
           onPressed: () {
             if (record.episode.last > 1) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text("${record.title}, updated!"),
+              ));
               TrackerRepository.updateRecord(
                 tracker,
                 record,
                 episode: [
-                  ...record.episode.sublist(0, record.episode.length -1),
+                  ...record.episode.sublist(0, record.episode.length - 1),
                   record.episode.last - 1
                 ],
               );
@@ -40,11 +44,15 @@ class ChecklistEpisodeDataCell extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: Duration(seconds: 1),
+              content: Text("${record.title}, updated!"),
+            ));
             TrackerRepository.updateRecord(
               tracker,
               record,
               episode: [
-                ...record.episode.sublist(0, record.episode.length -1),
+                ...record.episode.sublist(0, record.episode.length - 1),
                 record.episode.last + 1
               ],
             );

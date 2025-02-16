@@ -22,7 +22,7 @@ class HistoryDatatable extends StatefulWidget {
 
 class _HistoryDatatableState extends State<HistoryDatatable> {
   int _sortColumnIndex = 0;
-  bool _sortAscending = true;
+  bool _sortAscending = false;
 
   void _onSortTitle(int columnIndex, bool ascending) {
     setState(() {
@@ -95,7 +95,7 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
     super.initState();
 
     // apply sort initially
-    _onSortTitle(_sortColumnIndex, _sortAscending);
+    _onSortAiredFrom(_sortColumnIndex, _sortAscending);
   }
 
   @override
@@ -103,7 +103,7 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
     super.didUpdateWidget(oldWidget);
 
     // apply sort when refetching new data
-    _onSortTitle(_sortColumnIndex, _sortAscending);
+    _onSortAiredFrom(_sortColumnIndex, _sortAscending);
   }
 
   @override

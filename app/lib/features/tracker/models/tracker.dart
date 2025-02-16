@@ -61,4 +61,41 @@ class Record {
       watched: data["watched"] ?? false,
     );
   }
+
+  MutableRecord toMutableRecord() {
+    return MutableRecord(
+        uid: uid,
+        title: title,
+        titlePronunciation: titlePronunciation,
+        titleEnglish: titleEnglish,
+        episode: episode,
+        airedFrom: airedFrom,
+        genre: genre,
+        related: related,
+        watched: watched);
+  }
+}
+
+class MutableRecord {
+  MutableRecord({
+    required this.uid,
+    required this.title,
+    required this.titlePronunciation,
+    required this.titleEnglish,
+    required this.episode,
+    required this.airedFrom,
+    required this.genre,
+    required this.related,
+    required this.watched,
+  });
+
+  late String uid;
+  late String title;
+  late String titlePronunciation;
+  late String titleEnglish;
+  late List<int> episode;
+  late List<DateTime> airedFrom;
+  late List<String> genre;
+  late List<String> related;
+  late bool watched;
 }
