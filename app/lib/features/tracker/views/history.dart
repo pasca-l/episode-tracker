@@ -73,12 +73,22 @@ class _TrackerHistoryState extends State<TrackerHistory> {
       endDrawer: _selectedRecord != null
           ? HistoryDrawer(tracker: widget.tracker, record: _selectedRecord!)
           : null,
-      floatingActionButton: FloatingActionButton(
-        tooltip: "add record",
-        onPressed: () {
-          TrackerRepository.addRecord(widget.tracker);
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Builder(
+        builder: (BuildContext context) => FloatingActionButton(
+          tooltip: "add record",
+          onPressed: () async {
+            final record = await TrackerRepository.addRecord(widget.tracker);
+            setState(() {
+              _selectedRecord = record;
+            });
+
+            // ensure setState is completed before opening the drawer
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Scaffold.of(context).openEndDrawer();
+            });
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

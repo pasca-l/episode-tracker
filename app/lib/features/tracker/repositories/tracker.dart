@@ -36,10 +36,10 @@ class TrackerRepository {
         .snapshots();
   }
 
-  static Future<void> addRecord(Tracker tracker) {
+  static Future<Record> addRecord(Tracker tracker) async {
     Record record = Record.newRecord();
 
-    return FirebaseFirestore.instance
+    DocumentReference docRef = await FirebaseFirestore.instance
         .collection("trackers")
         .doc(tracker.uid)
         .collection("records")
@@ -56,6 +56,8 @@ class TrackerRepository {
     }).catchError(
       (e) => throw Exception("failed to add record, with error: $e"),
     );
+
+    return Record.fromFirestore(await docRef.get());
   }
 
   static Future<void> updateRecord(
