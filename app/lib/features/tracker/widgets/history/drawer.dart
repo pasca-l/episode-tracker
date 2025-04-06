@@ -164,7 +164,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                         return ChoiceChip(
                           label: Text("season ${index + 1}"),
                           selected: _seasonIndex == index,
-                          onSelected: (bool selected) {
+                          onSelected: (_) {
                             setState(() {
                               _seasonIndex = index;
                               _controllers["episode"]!.text = _currentRecord
@@ -187,6 +187,11 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (_) {
                       setState(() {
+                        _currentRecord.episode = [
+                          ..._currentRecord.episode.sublist(0, _seasonIndex),
+                          int.parse(_controllers["episode"]!.text),
+                          ..._currentRecord.episode.sublist(_seasonIndex + 1),
+                        ];
                         _updateEnabled = true;
                       });
                     },
@@ -207,7 +212,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     onTap: () async {
                       DateTime? selected = await showDatePicker(
                         context: context,
-                        initialDate: _currentRecord.airedFrom.last,
+                        initialDate: _currentRecord.airedFrom[_seasonIndex],
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );
@@ -215,6 +220,13 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                         _controllers["aired_from"]!.text =
                             selected.toString().substring(0, 10);
                         setState(() {
+                          _currentRecord.airedFrom = [
+                            ..._currentRecord.airedFrom.sublist(0, _seasonIndex),
+                            DateTime.parse(_controllers["aired_from"]!.text),
+                            ..._currentRecord.airedFrom.sublist(
+                              _seasonIndex + 1,
+                            ),
+                          ];
                           _updateEnabled = true;
                         });
                       }
@@ -247,22 +259,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             titlePronunciation:
                                 _controllers["title_pronunciation"]!.text,
                             titleEnglish: _controllers["title_english"]!.text,
-                            episode: [
-                              ..._currentRecord.episode
-                                  .sublist(0, _seasonIndex),
-                              int.parse(_controllers["episode"]!.text),
-                              ..._currentRecord.episode
-                                  .sublist(_seasonIndex + 1),
-                            ],
-                            airedFrom: [
-                              ..._currentRecord.airedFrom
-                                  .sublist(0, _seasonIndex),
-                              DateTime.parse(
-                                _controllers["aired_from"]!.text,
-                              ),
-                              ..._currentRecord.airedFrom
-                                  .sublist(_seasonIndex + 1),
-                            ],
+                            episode: _currentRecord.episode,
+                            airedFrom: _currentRecord.airedFrom,
                             watched: _isChecked,
                           );
                           Navigator.of(context).pop();
