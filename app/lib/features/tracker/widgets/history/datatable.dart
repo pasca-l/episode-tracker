@@ -4,6 +4,68 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/utils/character_code.dart';
+import 'package:app/features/tracker/widgets/history/searchbar.dart';
+
+class HistoryDatatableWithSearch extends StatefulWidget {
+  const HistoryDatatableWithSearch({
+    super.key,
+    required this.tracker,
+    required this.records,
+    required this.onRecordTap,
+  });
+
+  final Tracker tracker;
+  final List<Record> records;
+  final Function(Record) onRecordTap;
+
+  @override
+  State<HistoryDatatableWithSearch> createState() => _HistoryDatatableWithSearchState();
+}
+
+class _HistoryDatatableWithSearchState extends State<HistoryDatatableWithSearch> {
+  List<Record> _displayedRecords = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _displayedRecords = widget.records;
+  }
+
+  @override
+  void didUpdateWidget(HistoryDatatableWithSearch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.records != widget.records) {
+      _displayedRecords = widget.records;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        HistorySearchBar(
+          records: widget.records,
+          onFiltered: (filteredRecords) {
+            setState(() {
+              _displayedRecords = filteredRecords;
+            });
+          },
+        ),
+        SizedBox(height: 20),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: HistoryDatatable(
+              tracker: widget.tracker,
+              records: _displayedRecords,
+              onRecordTap: widget.onRecordTap,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 class HistoryDatatable extends StatefulWidget {
   const HistoryDatatable({
