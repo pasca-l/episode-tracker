@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
+import 'package:app/features/tracker/utils/character_code.dart';
 
 class HistoryDatatable extends StatefulWidget {
   const HistoryDatatable({
@@ -30,11 +31,17 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
       _sortAscending = ascending;
       if (ascending) {
         widget.records.sort(
-          (a, b) => a.titlePronunciation.compareTo(b.titlePronunciation),
+          (a, b) => JapaneseCharacterCode.compare(
+            JapaneseCharacterCode.sanitize(a.titlePronunciation),
+            JapaneseCharacterCode.sanitize(b.titlePronunciation),
+          ),
         );
       } else {
         widget.records.sort(
-          (a, b) => b.titlePronunciation.compareTo(a.titlePronunciation),
+          (a, b) => JapaneseCharacterCode.compare(
+            JapaneseCharacterCode.sanitize(b.titlePronunciation),
+            JapaneseCharacterCode.sanitize(a.titlePronunciation),
+          ),
         );
       }
     });
