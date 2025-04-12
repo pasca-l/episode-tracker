@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
+import 'package:app/features/tracker/utils/character_code.dart';
 
 class HistoryDrawer extends StatefulWidget {
   const HistoryDrawer({super.key, required this.tracker, required this.record});
@@ -122,6 +123,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return "Please enter some text";
+                      } else if (val != JapaneseCharacterCode.sanitize(val)) {
+                        return "Please enter only kana characters";
                       }
                       return null;
                     },
@@ -221,7 +224,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             selected.toString().substring(0, 10);
                         setState(() {
                           _currentRecord.airedFrom = [
-                            ..._currentRecord.airedFrom.sublist(0, _seasonIndex),
+                            ..._currentRecord.airedFrom
+                                .sublist(0, _seasonIndex),
                             DateTime.parse(_controllers["aired_from"]!.text),
                             ..._currentRecord.airedFrom.sublist(
                               _seasonIndex + 1,
