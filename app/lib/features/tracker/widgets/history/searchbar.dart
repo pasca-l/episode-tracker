@@ -14,31 +14,36 @@ class HistorySearchBar extends StatelessWidget {
   final List<Record> records;
   final Function(List<Record>) onFiltered;
 
-  void _filterRecords(String query) {
-    if (query.isEmpty) {
-      onFiltered(records);
-      return;
-    }
-
-    final lowercaseQuery = query.toLowerCase();
-    final filteredRecords = records.where((record) {
-      return record.title.toLowerCase().contains(lowercaseQuery) ||
-          record.titlePronunciation.toLowerCase().contains(lowercaseQuery) ||
-          record.titleEnglish.toLowerCase().contains(lowercaseQuery);
-    }).toList();
-
-    onFiltered(filteredRecords);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SearchBar(
-      hintText: 'Search by title, pronunciation, or english title...',
-      leading: Icon(Icons.search),
-      padding: MaterialStateProperty.all(
-        EdgeInsets.symmetric(horizontal: 16.0),
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width,
       ),
-      onChanged: _filterRecords,
+      child: SearchBar(
+        hintText: 'Search by title, pronunciation, or english title...',
+        leading: Icon(Icons.search),
+        padding: WidgetStatePropertyAll(
+          EdgeInsets.symmetric(horizontal: 16.0),
+        ),
+        onChanged: (String query) {
+          if (query.isEmpty) {
+            onFiltered(records);
+            return;
+          }
+
+          final lowercaseQuery = query.toLowerCase();
+          final filteredRecords = records.where((record) {
+            return record.title.toLowerCase().contains(lowercaseQuery) ||
+                record.titlePronunciation
+                    .toLowerCase()
+                    .contains(lowercaseQuery) ||
+                record.titleEnglish.toLowerCase().contains(lowercaseQuery);
+          }).toList();
+
+          onFiltered(filteredRecords);
+        },
+      ),
     );
   }
 }

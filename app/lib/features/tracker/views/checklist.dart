@@ -42,8 +42,9 @@ class TrackerChecklist extends StatelessWidget {
 
             return Padding(
               padding: EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width - 40),
                 child: ChecklistDatatable(tracker: tracker, records: records),
               ),
             );
