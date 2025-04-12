@@ -159,7 +159,6 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
   @override
   void initState() {
     super.initState();
-
     // apply sort initially
     _onSortAiredFrom(_sortColumnIndex, _sortAscending);
   }
@@ -167,7 +166,6 @@ class _HistoryDatatableState extends State<HistoryDatatable> {
   @override
   void didUpdateWidget(HistoryDatatable oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     // apply sort when refetching new data
     _onSortAiredFrom(_sortColumnIndex, _sortAscending);
   }

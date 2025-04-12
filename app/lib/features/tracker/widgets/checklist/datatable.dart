@@ -30,15 +30,15 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
       if (ascending) {
         widget.records.sort(
           (a, b) => JapaneseCharacterCode.compare(
-            JapaneseCharacterCode.sanitize(a.titleEnglish),
-            JapaneseCharacterCode.sanitize(b.titleEnglish),
+            JapaneseCharacterCode.sanitize(a.titlePronunciation),
+            JapaneseCharacterCode.sanitize(b.titlePronunciation),
           ),
         );
       } else {
         widget.records.sort(
           (a, b) => JapaneseCharacterCode.compare(
-            JapaneseCharacterCode.sanitize(b.titleEnglish),
-            JapaneseCharacterCode.sanitize(a.titleEnglish),
+            JapaneseCharacterCode.sanitize(b.titlePronunciation),
+            JapaneseCharacterCode.sanitize(a.titlePronunciation),
           ),
         );
       }
@@ -48,7 +48,6 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
   @override
   void initState() {
     super.initState();
-
     // apply sort initially
     _onSortTitle(_sortColumnIndex, _sortAscending);
   }
@@ -56,7 +55,6 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
   @override
   void didUpdateWidget(ChecklistDatatable oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     // apply sort when refetching new data
     _onSortTitle(_sortColumnIndex, _sortAscending);
   }
