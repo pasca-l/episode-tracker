@@ -34,7 +34,7 @@ class Record {
   factory Record.newRecord() {
     return Record(
       uid: "",
-      title: "no title",
+      title: "",
       titlePronunciation: "",
       titleEnglish: "",
       episode: List<int>.from([1]),
@@ -50,7 +50,7 @@ class Record {
 
     return Record(
       uid: doc.id,
-      title: data["title"] ?? "no title",
+      title: data["title"] ?? "",
       titlePronunciation: data["title_pronunciation"] ?? "",
       titleEnglish: data["title_english"] ?? "",
       episode: List<int>.from(data["episode"] ?? [1]),
