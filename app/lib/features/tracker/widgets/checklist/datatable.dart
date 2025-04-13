@@ -61,75 +61,54 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columnSpacing: 15,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            columns: [
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    "Title",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    "Next episode",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Watched?",
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columnSpacing: 15,
+          sortColumnIndex: _sortColumnIndex,
+          sortAscending: _sortAscending,
+          columns: [
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  "Title",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
-            rows: widget.records.map<DataRow>((record) {
-              return DataRow(
-                cells: [
-                  DataCell(Container(
-                    constraints: BoxConstraints(minWidth: 180, maxWidth: 180),
-                    child: Text(record.title),
-                  )),
-                  DataCell(Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 10,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () {
-                          if (record.episode.last > 1) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              duration: Duration(seconds: 1),
-                              content: Text("${record.title}, updated!"),
-                            ));
-                            TrackerRepository.updateRecord(
-                              widget.tracker,
-                              record,
-                              episode: [
-                                ...record.episode
-                                    .sublist(0, record.episode.length - 1),
-                                record.episode.last - 1
-                              ],
-                            );
-                          }
-                        },
-                      ),
-                      Text((record.episode.last + 1).toString()),
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () {
+            ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  "Next episode",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Watched?",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+          rows: widget.records.map<DataRow>((record) {
+            return DataRow(
+              cells: [
+                DataCell(Container(
+                  constraints: BoxConstraints(minWidth: 180, maxWidth: 180),
+                  child: Text(record.title),
+                )),
+                DataCell(Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () {
+                        if (record.episode.last > 1) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             duration: Duration(seconds: 1),
                             content: Text("${record.title}, updated!"),
@@ -140,31 +119,50 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
                             episode: [
                               ...record.episode
                                   .sublist(0, record.episode.length - 1),
-                              record.episode.last + 1
+                              record.episode.last - 1
                             ],
                           );
-                        },
-                      ),
-                    ],
-                  )),
-                  DataCell(
-                    Center(
-                      child: Checkbox(
-                        value: record.watched,
-                        onChanged: (_) {
-                          TrackerRepository.updateRecord(
-                            widget.tracker,
-                            record,
-                            watched: !record.watched,
-                          );
-                        },
-                      ),
+                        }
+                      },
+                    ),
+                    Text((record.episode.last + 1).toString()),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 1),
+                          content: Text("${record.title}, updated!"),
+                        ));
+                        TrackerRepository.updateRecord(
+                          widget.tracker,
+                          record,
+                          episode: [
+                            ...record.episode
+                                .sublist(0, record.episode.length - 1),
+                            record.episode.last + 1
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                )),
+                DataCell(
+                  Center(
+                    child: Checkbox(
+                      value: record.watched,
+                      onChanged: (_) {
+                        TrackerRepository.updateRecord(
+                          widget.tracker,
+                          record,
+                          watched: !record.watched,
+                        );
+                      },
                     ),
                   ),
-                ],
-              );
-            }).toList(),
-          ),
+                ),
+              ],
+            );
+          }).toList(),
         ),
       ),
     );

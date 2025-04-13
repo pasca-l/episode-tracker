@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '366661800804',
     projectId: 'episode-tracker-ceeb1',
     storageBucket: 'episode-tracker-ceeb1.firebasestorage.app',
-    iosClientId: '366661800804-s6a4gpjg3ts636trbooi0i0ss8mehsqp.apps.googleusercontent.com',
+    iosClientId:
+        '366661800804-s6a4gpjg3ts636trbooi0i0ss8mehsqp.apps.googleusercontent.com',
     iosBundleId: 'com.example.app',
   );
 
@@ -74,8 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '366661800804',
     projectId: 'episode-tracker-ceeb1',
     storageBucket: 'episode-tracker-ceeb1.firebasestorage.app',
-    iosClientId: '366661800804-s6a4gpjg3ts636trbooi0i0ss8mehsqp.apps.googleusercontent.com',
+    iosClientId:
+        '366661800804-s6a4gpjg3ts636trbooi0i0ss8mehsqp.apps.googleusercontent.com',
     iosBundleId: 'com.example.app',
   );
-
 }
