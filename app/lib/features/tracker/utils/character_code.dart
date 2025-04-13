@@ -3,7 +3,7 @@ class JapaneseCharacterCode {
     // A-row
     'あ', 'ぁ', 'ア', 'ァ',
     'い', 'ぃ', 'イ', 'ィ',
-    'う', 'ぅ', 'ウ', 'ゥ',
+    'う', 'ぅ', 'ウ', 'ゥ', 'ゔ', 'ヴ',
     'え', 'ぇ', 'エ', 'ェ',
     'お', 'ぉ', 'オ', 'ォ',
     // KA-row
@@ -53,14 +53,21 @@ class JapaneseCharacterCode {
     'れ', 'レ',
     'ろ', 'ロ',
     // WA-row
-    'わ', 'ワ',
+    'わ', 'ワ', 'ゎ', 'ヮ',
+    'ゐ', 'ヰ',
+    'ゑ', 'ヱ',
     'を', 'ヲ',
     'ん', 'ン'
   ];
 
   static String sanitize(String text) {
     // remove all non-kana characters
-    return text.replaceAll(RegExp(r'[^\u3042-\u307D\u30A2-\u30DD]'), '');
+    return text.replaceAll(RegExp(r'[^\u3041-\u3094\u30A1-\u30F4]'), '');
+  }
+
+  static String validate(String text) {
+    // remove all non-kana characters (including long vowel mark)
+    return text.replaceAll(RegExp(r'[^\u3041-\u3094\u30A1-\u30F4\u30FC]'), '');
   }
 
   static int compare(String a, String b) {
@@ -69,7 +76,7 @@ class JapaneseCharacterCode {
       final bChar = b[i];
       final aIndex = _kanaOrder.indexOf(aChar);
       final bIndex = _kanaOrder.indexOf(bChar);
-      
+
       if (aIndex != bIndex) {
         return aIndex - bIndex;
       }

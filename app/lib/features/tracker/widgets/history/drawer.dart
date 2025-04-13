@@ -123,7 +123,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return "Please enter some text";
-                      } else if (val != JapaneseCharacterCode.sanitize(val)) {
+                      } else if (val != JapaneseCharacterCode.validate(val)) {
                         return "Please enter only kana characters";
                       }
                       return null;
