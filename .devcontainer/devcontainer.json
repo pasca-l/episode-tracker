@@ -3,7 +3,7 @@
 
   "dockerComposeFile": "../docker-compose.yml",
   "service": "app",
-  "workspaceFolder": "/home/local/",
+  "workspaceFolder": "/home/local/app",
 
   "customizations": {
     "vscode": {

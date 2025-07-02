@@ -1,4 +1,4 @@
-.PHONY: start
+.PHONY: start format sort_import
 
 start:
 	flutter pub get
