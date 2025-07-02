@@ -21,6 +21,19 @@ class TrackerHistory extends StatefulWidget {
 
 class _TrackerHistoryState extends State<TrackerHistory> {
   Record? _selectedRecord;
+  late final TextEditingController _queryController;
+
+  @override
+  void initState() {
+    super.initState();
+    _queryController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _queryController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +67,7 @@ class _TrackerHistoryState extends State<TrackerHistory> {
                   child: HistoryDatatableWithSearch(
                     tracker: widget.tracker,
                     records: records,
+                    queryController: _queryController,
                     onRecordTap: (record) {
                       setState(() {
                         _selectedRecord = record;
