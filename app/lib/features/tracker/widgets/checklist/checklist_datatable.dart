@@ -109,10 +109,6 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
                       icon: Icon(Icons.remove),
                       onPressed: () {
                         if (record.episode.last > 1) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 1),
-                            content: Text("${record.title}, updated!"),
-                          ));
                           TrackerRepository.updateRecord(
                             widget.tracker,
                             record,
@@ -122,6 +118,10 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
                               record.episode.last - 1
                             ],
                           );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("\"${record.title}\", updated!"),
+                          ));
                         }
                       },
                     ),
@@ -129,10 +129,6 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 1),
-                          content: Text("${record.title}, updated!"),
-                        ));
                         TrackerRepository.updateRecord(
                           widget.tracker,
                           record,
@@ -142,6 +138,10 @@ class _ChecklistDatatableState extends State<ChecklistDatatable> {
                             record.episode.last + 1
                           ],
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 1),
+                          content: Text("\"${record.title}\", updated!"),
+                        ));
                       },
                     ),
                   ],

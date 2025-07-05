@@ -267,6 +267,11 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             airedFrom: _currentRecord.airedFrom,
                             watched: _isChecked,
                           );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content:
+                                Text("\"${widget.record.title}\", updated!"),
+                          ));
                           Navigator.of(context).pop();
                         }
                       : null,
@@ -280,6 +285,11 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             widget.tracker,
                             widget.record,
                           );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 1),
+                            content:
+                                Text("\"${widget.record.title}\", deleted!"),
+                          ));
                           Navigator.of(context).pop();
                         }
                       : null,

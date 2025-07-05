@@ -89,6 +89,10 @@ class _TrackerHistoryState extends State<TrackerHistory> {
             final record = await TrackerRepository.addRecord(widget.tracker);
             if (context.mounted) {
               _onRecordTap(context)(record);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text("new record created!"),
+              ));
             }
           },
           child: Icon(Icons.add),
