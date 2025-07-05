@@ -43,7 +43,7 @@ class TrackerPage extends StatelessWidget {
                 children: [
                   TrackerChecklist(tracker: snapshot.data!),
                   TrackerHistory(tracker: snapshot.data!),
-                  const TrackerStats(),
+                  TrackerStats(tracker: snapshot.data!),
                   const TrackerSettings(),
                 ],
               );

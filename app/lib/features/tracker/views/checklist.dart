@@ -36,7 +36,7 @@ class TrackerChecklist extends StatelessWidget {
                     .map((doc) {
                       return Record.fromFirestore(doc);
                     })
-                    .where((record) => record.watched == false)
+                    .where((record) => !record.watched)
                     .toList() ??
                 [];
 
