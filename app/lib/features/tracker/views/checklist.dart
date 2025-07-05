@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
-import 'package:app/features/tracker/widgets/checklist/checklist_datatable.dart';
+import 'package:app/features/tracker/widgets/checklist/checklist_view.dart';
 
 class TrackerChecklist extends StatelessWidget {
   const TrackerChecklist({super.key, required this.tracker});
@@ -40,14 +40,7 @@ class TrackerChecklist extends StatelessWidget {
                     .toList() ??
                 [];
 
-            return Padding(
-              padding: EdgeInsets.all(20),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width - 40),
-                child: ChecklistDatatable(tracker: tracker, records: records),
-              ),
-            );
+            return ChecklistView(tracker: tracker, records: records);
           },
         ),
       ),
