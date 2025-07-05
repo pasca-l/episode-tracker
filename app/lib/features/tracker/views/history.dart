@@ -23,15 +23,17 @@ class _TrackerHistoryState extends State<TrackerHistory> {
   Record? _selectedRecord;
   late final TextEditingController _queryController;
 
-  void _onRecordTap(Record record) {
-    setState(() {
-      _selectedRecord = record;
-    });
+  Function(Record) _onRecordTap(BuildContext context) {
+    return (Record record) {
+      setState(() {
+        _selectedRecord = record;
+      });
 
-    // ensures setState is completed before opening the drawer
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Scaffold.of(context).openEndDrawer();
-    });
+      // ensures setState is completed before opening the drawer
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Scaffold.of(context).openEndDrawer();
+      });
+    };
   }
 
   @override
@@ -72,7 +74,7 @@ class _TrackerHistoryState extends State<TrackerHistory> {
               tracker: widget.tracker,
               records: records,
               queryController: _queryController,
-              onRecordTap: _onRecordTap,
+              onRecordTap: _onRecordTap(context),
             );
           },
         ),
@@ -85,7 +87,9 @@ class _TrackerHistoryState extends State<TrackerHistory> {
           tooltip: "add record",
           onPressed: () async {
             final record = await TrackerRepository.addRecord(widget.tracker);
-            _onRecordTap(record);
+            if (context.mounted) {
+              _onRecordTap(context)(record);
+            }
           },
           child: Icon(Icons.add),
         ),
