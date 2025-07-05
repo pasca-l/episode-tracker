@@ -7,8 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
-import 'package:app/features/tracker/widgets/history/datatable.dart';
-import 'package:app/features/tracker/widgets/history/drawer.dart';
+import 'package:app/features/tracker/widgets/history/history_datatable_with_search.dart';
+import 'package:app/features/tracker/widgets/history/history_drawer.dart';
 
 class TrackerHistory extends StatefulWidget {
   const TrackerHistory({super.key, required this.tracker});

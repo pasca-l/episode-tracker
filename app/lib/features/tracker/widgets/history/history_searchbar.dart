@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-class HistorySearchBar extends StatelessWidget {
-  const HistorySearchBar({
+class HistorySearchbar extends StatelessWidget {
+  const HistorySearchbar({
     super.key,
     required this.controller,
   });

@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 
 List<Record> filterRecords(List<Record> records, String query) {

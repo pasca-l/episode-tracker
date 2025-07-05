@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
-import 'package:app/features/tracker/widgets/checklist/datatable.dart';
+import 'package:app/features/tracker/widgets/checklist/checklist_datatable.dart';
 
 class TrackerChecklist extends StatelessWidget {
   const TrackerChecklist({super.key, required this.tracker});
