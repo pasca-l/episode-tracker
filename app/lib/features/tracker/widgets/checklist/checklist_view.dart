@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
-import 'package:app/features/tracker/widgets/checklist/checklist_datatable.dart';
+import 'package:app/features/tracker/widgets/checklist/checklist_list.dart';
 
 class ChecklistView extends StatelessWidget {
   const ChecklistView(
@@ -20,7 +20,7 @@ class ChecklistView extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width - 40,
         ),
-        child: ChecklistDatatable(tracker: tracker, records: records),
+        child: ChecklistList(tracker: tracker, records: records),
       ),
     );
   }
