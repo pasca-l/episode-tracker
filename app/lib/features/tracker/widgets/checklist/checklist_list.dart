@@ -28,7 +28,7 @@ class _ChecklistListState extends State<ChecklistList> {
     setState(() {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
-      sortRecordsByTitle(widget.records, ascending);
+      RecordUtils.sortRecordsByTitle(widget.records, ascending);
     });
   }
 

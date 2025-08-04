@@ -29,7 +29,7 @@ class _HistoryListState extends State<HistoryList> {
     setState(() {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
-      sortRecordsByAiredFrom(widget.records, ascending);
+      RecordUtils.sortRecordsByAiredFrom(widget.records, ascending);
     });
   }
 

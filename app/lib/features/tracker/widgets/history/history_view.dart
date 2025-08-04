@@ -30,7 +30,7 @@ class _HistoryViewState extends State<HistoryView> {
   void _filterListener() {
     final query = widget.queryController.text;
     setState(() {
-      _displayedRecords = filterRecords(widget.records, query);
+      _displayedRecords = RecordUtils.filterRecords(widget.records, query);
     });
   }
 
@@ -38,7 +38,7 @@ class _HistoryViewState extends State<HistoryView> {
   void initState() {
     super.initState();
     _displayedRecords =
-        filterRecords(widget.records, widget.queryController.text);
+        RecordUtils.filterRecords(widget.records, widget.queryController.text);
     widget.queryController.addListener(_filterListener);
   }
 
@@ -46,8 +46,8 @@ class _HistoryViewState extends State<HistoryView> {
   void didUpdateWidget(HistoryView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.records != widget.records) {
-      _displayedRecords =
-          filterRecords(widget.records, widget.queryController.text);
+      _displayedRecords = RecordUtils.filterRecords(
+          widget.records, widget.queryController.text);
     }
     if (oldWidget.queryController.text != widget.queryController.text) {
       oldWidget.queryController.removeListener(_filterListener);
