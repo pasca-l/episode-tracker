@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:app/features/tracker/utils/tracker.dart';
 import 'package:app/features/tracker/models/tracker.dart';
+import 'package:app/features/tracker/utils/tracker.dart';
 import 'package:app/features/tracker/widgets/history/history_list.dart';
 import 'package:app/features/tracker/widgets/history/history_searchbar.dart';
 

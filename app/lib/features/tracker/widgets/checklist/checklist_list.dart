@@ -1,10 +1,10 @@
 // Flutter imports:
-import 'package:app/features/tracker/utils/tracker.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
+import 'package:app/features/tracker/utils/tracker.dart';
 
 class ChecklistList extends StatefulWidget {
   const ChecklistList({

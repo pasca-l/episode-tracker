@@ -1,9 +1,9 @@
 // Flutter imports:
-import 'package:app/features/tracker/widgets/stats/stats_episode_summary_card.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
+import 'package:app/features/tracker/widgets/stats/stats_episode_summary_card.dart';
 import 'package:app/features/tracker/widgets/stats/stats_title_summary_card.dart';
 
 class StatsView extends StatelessWidget {
