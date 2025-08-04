@@ -9,6 +9,7 @@ import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/widgets/history/history_drawer.dart';
 import 'package:app/features/tracker/widgets/history/history_view.dart';
+import 'package:app/shared/widgets/snackbar.dart';
 
 class TrackerHistory extends StatefulWidget {
   const TrackerHistory({super.key, required this.tracker});
@@ -89,10 +90,7 @@ class _TrackerHistoryState extends State<TrackerHistory> {
             final record = await TrackerRepository.addRecord(widget.tracker);
             if (context.mounted) {
               _onRecordTap(context)(record);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text("new record created!"),
-              ));
+              SnackbarHelper.show(context, "new record created!");
             }
           },
           child: Icon(Icons.add),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/utils/tracker.dart';
+import 'package:app/shared/widgets/snackbar.dart';
 
 class ChecklistList extends StatefulWidget {
   const ChecklistList({
@@ -62,27 +63,25 @@ class _ChecklistListState extends State<ChecklistList> {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text('Next episode: ${record.episode.last + 1}'),
+          subtitle: Text("Next episode: ${record.episode.last + 1}"),
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
-                  if (record.episode.last > 1) {
-                    TrackerRepository.updateRecord(
-                      widget.tracker,
-                      record,
-                      episode: [
-                        ...record.episode.sublist(0, record.episode.length - 1),
-                        record.episode.last - 1
-                      ],
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 1),
-                      content: Text("\"${record.title}\", updated!"),
-                    ));
+                  if (record.episode.last <= 1) {
+                    return;
                   }
+                  TrackerRepository.updateRecord(
+                    widget.tracker,
+                    record,
+                    episode: [
+                      ...record.episode.sublist(0, record.episode.length - 1),
+                      record.episode.last - 1
+                    ],
+                  );
+                  SnackbarHelper.show(context, "\"${record.title}\", updated!");
                 },
               ),
               IconButton(
@@ -96,10 +95,7 @@ class _ChecklistListState extends State<ChecklistList> {
                       record.episode.last + 1
                     ],
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    duration: Duration(seconds: 1),
-                    content: Text("\"${record.title}\", updated!"),
-                  ));
+                  SnackbarHelper.show(context, "\"${record.title}\", updated!");
                 },
               ),
             ],
@@ -112,10 +108,7 @@ class _ChecklistListState extends State<ChecklistList> {
                 record,
                 watched: !record.watched,
               );
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text("\"${record.title}\", watched!"),
-              ));
+              SnackbarHelper.show(context, "\"${record.title}\", watched!");
             },
           ),
         );

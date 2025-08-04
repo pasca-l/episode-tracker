@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/authentication/repositories/authentication.dart';
+import 'package:app/shared/widgets/snackbar.dart';
 
 class AuthenticationLogin extends StatefulWidget {
   const AuthenticationLogin({super.key});
@@ -127,36 +128,17 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
                                 _controllers["password"]!.text.trim(),
                               );
                               if (context.mounted) {
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).clearSnackBars();
+                                SnackbarHelper.clear(context);
                               }
                             } catch (e) {
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.toString()),
-                                    duration: Duration(days: 1),
-                                    action: SnackBarAction(
-                                      label: 'Dismiss',
-                                      textColor: Colors.white,
-                                      onPressed: () {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).hideCurrentSnackBar();
-                                      },
-                                    ),
-                                  ),
-                                );
+                                SnackbarHelper.showErrorWithAction(
+                                    context, e.toString());
                               }
                             }
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Please check the inputs"),
-                                duration: Duration(seconds: 3),
-                              ),
-                            );
+                            SnackbarHelper.show(
+                                context, "Please check the inputs");
                           }
                         }
                       : null,
@@ -169,21 +151,8 @@ class _AuthenticationLoginState extends State<AuthenticationLogin> {
                         await AuthenticationRepository.logInWithGoogle();
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                              duration: Duration(days: 1),
-                              action: SnackBarAction(
-                                label: 'Dismiss',
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  ScaffoldMessenger.of(
-                                    context,
-                                  ).hideCurrentSnackBar();
-                                },
-                              ),
-                            ),
-                          );
+                          SnackbarHelper.showErrorWithAction(
+                              context, e.toString());
                         }
                       }
                     },

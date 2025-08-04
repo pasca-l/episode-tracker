@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/utils/character_code.dart';
+import 'package:app/shared/widgets/snackbar.dart';
 
 class HistoryDrawer extends StatefulWidget {
   const HistoryDrawer({super.key, required this.tracker, required this.record});
@@ -267,11 +268,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             airedFrom: _currentRecord.airedFrom,
                             watched: _isChecked,
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 1),
-                            content:
-                                Text("\"${widget.record.title}\", updated!"),
-                          ));
+                          SnackbarHelper.show(
+                              context, "\"${widget.record.title}\", updated!");
                           Navigator.of(context).pop();
                         }
                       : null,
@@ -285,11 +283,8 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                             widget.tracker,
                             widget.record,
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 1),
-                            content:
-                                Text("\"${widget.record.title}\", deleted!"),
-                          ));
+                          SnackbarHelper.show(
+                              context, "\"${widget.record.title}\", deleted!");
                           Navigator.of(context).pop();
                         }
                       : null,
