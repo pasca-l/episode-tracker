@@ -24,6 +24,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Episode Tracker',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
       home: StreamBuilder<User?>(

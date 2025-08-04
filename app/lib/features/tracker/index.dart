@@ -27,6 +27,14 @@ class TrackerPage extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Tracker"),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            bottom: const TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.checklist), text: "Checklist"),
+                Tab(icon: Icon(Icons.history), text: "History"),
+                Tab(icon: Icon(Icons.insights), text: "Statistics"),
+                Tab(icon: Icon(Icons.settings), text: "Settings"),
+              ],
+            ),
           ),
           body: FutureBuilder<Tracker>(
             future: TrackerRepository.getTracker(user),
@@ -48,14 +56,6 @@ class TrackerPage extends StatelessWidget {
                 ],
               );
             },
-          ),
-          bottomNavigationBar: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.checklist)),
-              Tab(icon: Icon(Icons.history)),
-              Tab(icon: Icon(Icons.insights)),
-              Tab(icon: Icon(Icons.settings)),
-            ],
           ),
           drawer: AuthenticationDrawer(user: user),
         ),

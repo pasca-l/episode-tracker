@@ -16,7 +16,13 @@ class HistorySearchbar extends StatelessWidget {
         maxWidth: MediaQuery.of(context).size.width,
       ),
       child: SearchBar(
+        textStyle: WidgetStatePropertyAll(TextStyle(
+          fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+        )),
         hintText: 'Search by title, pronunciation, or english title...',
+        hintStyle: WidgetStatePropertyAll(TextStyle(
+          fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+        )),
         leading: Icon(Icons.search),
         padding: WidgetStatePropertyAll(
           EdgeInsets.symmetric(horizontal: 16.0),
