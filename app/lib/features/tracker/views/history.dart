@@ -21,16 +21,16 @@ class TrackerHistory extends StatefulWidget {
 }
 
 class _TrackerHistoryState extends State<TrackerHistory> {
-  Record? _selectedRecord;
+  final ValueNotifier<Record?> _selectedRecordNotifier =
+      ValueNotifier<Record?>(null);
   late final TextEditingController _queryController;
 
   Function(Record) _onRecordTap(BuildContext context) {
     return (Record record) {
-      setState(() {
-        _selectedRecord = record;
-      });
+      // update selected record without rebuilding the entire widget
+      _selectedRecordNotifier.value = record;
 
-      // ensures setState is completed before opening the drawer
+      // ensures the code above is completed before opening the drawer
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Scaffold.of(context).openEndDrawer();
       });
@@ -46,6 +46,7 @@ class _TrackerHistoryState extends State<TrackerHistory> {
   @override
   void dispose() {
     super.dispose();
+    _selectedRecordNotifier.dispose();
     _queryController.dispose();
   }
 
@@ -80,9 +81,14 @@ class _TrackerHistoryState extends State<TrackerHistory> {
           },
         ),
       ),
-      endDrawer: _selectedRecord != null
-          ? HistoryDrawer(tracker: widget.tracker, record: _selectedRecord!)
-          : null,
+      endDrawer: ValueListenableBuilder<Record?>(
+        valueListenable: _selectedRecordNotifier,
+        builder: (context, selectedRecord, _) {
+          return selectedRecord != null
+              ? HistoryDrawer(tracker: widget.tracker, record: selectedRecord)
+              : Drawer(child: Text("no record selected..."));
+        },
+      ),
       floatingActionButton: Builder(
         builder: (BuildContext context) => FloatingActionButton(
           tooltip: "add record",
