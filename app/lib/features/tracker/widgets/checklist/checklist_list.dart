@@ -59,7 +59,7 @@ class _ChecklistListState extends State<ChecklistList> {
           dense: true,
           contentPadding: EdgeInsets.only(right: 0),
           title: Text(
-            record.title,
+            record.getDisplayTitle(context),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -81,7 +81,8 @@ class _ChecklistListState extends State<ChecklistList> {
                       record.episode.last - 1
                     ],
                   );
-                  SnackbarHelper.show(context, "\"${record.title}\", updated!");
+                  SnackbarHelper.show(context,
+                      "\"${record.getDisplayTitle(context)}\", updated!");
                 },
               ),
               IconButton(
@@ -95,7 +96,8 @@ class _ChecklistListState extends State<ChecklistList> {
                       record.episode.last + 1
                     ],
                   );
-                  SnackbarHelper.show(context, "\"${record.title}\", updated!");
+                  SnackbarHelper.show(context,
+                      "\"${record.getDisplayTitle(context)}\", updated!");
                 },
               ),
             ],
@@ -108,7 +110,8 @@ class _ChecklistListState extends State<ChecklistList> {
                 record,
                 watched: !record.watched,
               );
-              SnackbarHelper.show(context, "\"${record.title}\", watched!");
+              SnackbarHelper.show(
+                  context, "\"${record.getDisplayTitle(context)}\", watched!");
             },
           ),
         );

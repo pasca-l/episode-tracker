@@ -1,6 +1,10 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/utils/character_code.dart';
+import 'package:app/shared/providers/language_provider.dart';
 
 class RecordUtils {
   static void sortRecordsByTitle(List<Record> records, bool ascending) {
@@ -58,5 +62,15 @@ class RecordUtils {
           record.titlePronunciation.toLowerCase().contains(lowercaseQuery) ||
           record.titleEnglish.toLowerCase().contains(lowercaseQuery);
     }).toList();
+  }
+}
+
+extension RecordDisplayExtensions on Record {
+  String getDisplayTitle(BuildContext context) {
+    final languageProvider = LanguageContext.of(context);
+    if (languageProvider?.isEnglish == true) {
+      return titleEnglish;
+    }
+    return title;
   }
 }
