@@ -1,17 +1,19 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 // Project imports:
 import 'package:app/shared/providers/language_provider.dart';
 
-class SettingsLanguage extends StatelessWidget {
+class SettingsLanguage extends ConsumerWidget {
   const SettingsLanguage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final languageProvider = LanguageContext.of(context);
-    Language? selectedLanguage =
-        languageProvider?.language ?? Language.japanese;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedLanguage = ref.watch(languageProvider);
+    final languageNotifier = ref.read(languageProvider.notifier);
 
     return Column(
       spacing: 10,
@@ -62,7 +64,7 @@ class SettingsLanguage extends StatelessWidget {
               groupValue: selectedLanguage,
               onChanged: (value) {
                 if (value != null) {
-                  languageProvider?.setLanguage(value);
+                  languageNotifier.setLanguage(value);
                 }
               },
             ),
@@ -73,7 +75,7 @@ class SettingsLanguage extends StatelessWidget {
               groupValue: selectedLanguage,
               onChanged: (value) {
                 if (value != null) {
-                  languageProvider?.setLanguage(value);
+                  languageNotifier.setLanguage(value);
                 }
               },
             ),

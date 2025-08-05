@@ -1,5 +1,5 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
@@ -66,9 +66,9 @@ class RecordUtils {
 }
 
 extension RecordDisplayExtensions on Record {
-  String getDisplayTitle(BuildContext context) {
-    final languageProvider = LanguageContext.of(context);
-    if (languageProvider?.isEnglish == true) {
+  String getDisplayTitle(WidgetRef ref) {
+    final language = ref.watch(languageProvider);
+    if (language == Language.english) {
       return titleEnglish;
     }
     return title;

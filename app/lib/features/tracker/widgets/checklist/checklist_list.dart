@@ -1,13 +1,16 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/utils/tracker.dart';
 import 'package:app/shared/widgets/snackbar.dart';
 
-class ChecklistList extends StatefulWidget {
+class ChecklistList extends ConsumerStatefulWidget {
   const ChecklistList({
     super.key,
     required this.tracker,
@@ -16,11 +19,12 @@ class ChecklistList extends StatefulWidget {
 
   final Tracker tracker;
   final List<Record> records;
+
   @override
-  State<ChecklistList> createState() => _ChecklistListState();
+  ConsumerState<ChecklistList> createState() => _ChecklistListState();
 }
 
-class _ChecklistListState extends State<ChecklistList> {
+class _ChecklistListState extends ConsumerState<ChecklistList> {
   int _sortColumnIndex = 0;
   bool _sortAscending = true;
 
@@ -59,7 +63,7 @@ class _ChecklistListState extends State<ChecklistList> {
           dense: true,
           contentPadding: EdgeInsets.only(right: 0),
           title: Text(
-            record.getDisplayTitle(context),
+            record.getDisplayTitle(ref),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -81,8 +85,8 @@ class _ChecklistListState extends State<ChecklistList> {
                       record.episode.last - 1
                     ],
                   );
-                  SnackbarHelper.show(context,
-                      "\"${record.getDisplayTitle(context)}\", updated!");
+                  SnackbarHelper.show(
+                      context, "\"${record.getDisplayTitle(ref)}\", updated!");
                 },
               ),
               IconButton(
@@ -96,8 +100,8 @@ class _ChecklistListState extends State<ChecklistList> {
                       record.episode.last + 1
                     ],
                   );
-                  SnackbarHelper.show(context,
-                      "\"${record.getDisplayTitle(context)}\", updated!");
+                  SnackbarHelper.show(
+                      context, "\"${record.getDisplayTitle(ref)}\", updated!");
                 },
               ),
             ],
@@ -111,7 +115,7 @@ class _ChecklistListState extends State<ChecklistList> {
                 watched: !record.watched,
               );
               SnackbarHelper.show(
-                  context, "\"${record.getDisplayTitle(context)}\", watched!");
+                  context, "\"${record.getDisplayTitle(ref)}\", watched!");
             },
           ),
         );

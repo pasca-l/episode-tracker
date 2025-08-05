@@ -1,61 +1,38 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum Language { japanese, english }
 
-class LanguageProvider extends ChangeNotifier {
-  Language _language = Language.japanese;
+class LanguageNotifier extends StateNotifier<Language> {
   static const String _languageKey = 'language_setting';
 
-  Language get language => _language;
-  bool get isEnglish => _language == Language.english;
-  bool get isJapanese => _language == Language.japanese;
-
-  LanguageProvider() {
+  LanguageNotifier() : super(Language.japanese) {
     _loadLanguage();
   }
 
-  void toggleLanguage() {
-    _language =
-        _language == Language.japanese ? Language.english : Language.japanese;
-    _saveLanguage();
-    notifyListeners();
-  }
+  bool get isEnglish => state == Language.english;
+  bool get isJapanese => state == Language.japanese;
 
   void setLanguage(Language language) {
-    if (_language != language) {
-      _language = language;
+    if (state != language) {
+      state = language;
       _saveLanguage();
-      notifyListeners();
     }
   }
 
   Future<void> _loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final languageIndex = prefs.getInt(_languageKey) ?? 0;
-    _language = Language.values[languageIndex];
-    notifyListeners();
+    state = Language.values[languageIndex];
   }
 
   Future<void> _saveLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_languageKey, _language.index);
+    await prefs.setInt(_languageKey, state.index);
   }
 }
 
-class LanguageContext extends InheritedNotifier<LanguageProvider> {
-  const LanguageContext({
-    super.key,
-    required LanguageProvider languageProvider,
-    required super.child,
-  }) : super(notifier: languageProvider);
-
-  static LanguageProvider? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<LanguageContext>()
-        ?.notifier;
-  }
-}
+final languageProvider = StateNotifierProvider<LanguageNotifier, Language>(
+  (ref) => LanguageNotifier(),
+);
