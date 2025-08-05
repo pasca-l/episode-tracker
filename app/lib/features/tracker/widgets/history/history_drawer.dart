@@ -74,7 +74,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
@@ -123,7 +123,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     },
                     validator: (val) {
                       if (val == null || val.isEmpty) {
-                        return "Please enter some text";
+                        return null;
                       } else if (val != JapaneseCharacterCode.validate(val)) {
                         return "Please enter only kana characters";
                       }
@@ -139,6 +139,15 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                         _updateEnabled = true;
                       });
                     },
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return null;
+                      } else if (val != EnglishCharacterCode.validate(val)) {
+                        return "Please enter only common English characters";
+                      }
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,

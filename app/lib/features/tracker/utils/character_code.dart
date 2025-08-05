@@ -1,3 +1,9 @@
+class EnglishCharacterCode {
+  static String validate(String text) {
+    return text.replaceAll(RegExp(r'''[^a-zA-Z0-9\s.,:;!?'"()&-]'''), '');
+  }
+}
+
 class JapaneseCharacterCode {
   static const List<String> _kanaOrder = [
     // A-row
