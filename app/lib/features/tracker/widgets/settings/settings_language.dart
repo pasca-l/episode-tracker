@@ -12,7 +12,7 @@ class SettingsLanguage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLanguage = ref.watch(languageProvider);
+    final selectedLanguage = ref.watch(languageProvider) ?? Language.japanese;
     final languageNotifier = ref.read(languageProvider.notifier);
 
     return Column(

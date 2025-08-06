@@ -4,10 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum Language { japanese, english }
 
-class LanguageNotifier extends StateNotifier<Language> {
+class LanguageNotifier extends StateNotifier<Language?> {
   static const String _languageKey = 'language_setting';
 
-  LanguageNotifier() : super(Language.japanese) {
+  LanguageNotifier() : super(null) {
     _loadLanguage();
   }
 
@@ -29,10 +29,10 @@ class LanguageNotifier extends StateNotifier<Language> {
 
   Future<void> _saveLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_languageKey, state.index);
+    await prefs.setInt(_languageKey, state!.index);
   }
 }
 
-final languageProvider = StateNotifierProvider<LanguageNotifier, Language>(
+final languageProvider = StateNotifierProvider<LanguageNotifier, Language?>(
   (ref) => LanguageNotifier(),
 );

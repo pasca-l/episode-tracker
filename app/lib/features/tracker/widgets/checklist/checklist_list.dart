@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/utils/tracker.dart';
+import 'package:app/shared/providers/language_provider.dart';
 import 'package:app/shared/widgets/snackbar.dart';
 
 class ChecklistList extends ConsumerStatefulWidget {
@@ -25,29 +26,28 @@ class ChecklistList extends ConsumerStatefulWidget {
 }
 
 class _ChecklistListState extends ConsumerState<ChecklistList> {
-  int _sortColumnIndex = 0;
-  bool _sortAscending = true;
-
-  void _onSortTitle(int columnIndex, bool ascending) {
-    setState(() {
-      _sortColumnIndex = columnIndex;
-      _sortAscending = ascending;
+  void _sortTitle() {
+    final ascending = true;
+    final language = ref.read(languageProvider);
+    if (language == Language.english) {
+      RecordUtils.sortRecordsByEnglishTitle(widget.records, ascending);
+    } else {
       RecordUtils.sortRecordsByTitle(widget.records, ascending);
-    });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     // apply sort initially
-    _onSortTitle(_sortColumnIndex, _sortAscending);
+    _sortTitle();
   }
 
   @override
   void didUpdateWidget(ChecklistList oldWidget) {
     super.didUpdateWidget(oldWidget);
     // apply sort when refetching new data
-    _onSortTitle(_sortColumnIndex, _sortAscending);
+    _sortTitle();
   }
 
   @override
