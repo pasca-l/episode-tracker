@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:app/features/tracker/models/tracker.dart';
+import 'package:app/features/tracker/widgets/settings/settings_imports.dart';
 import 'package:app/features/tracker/widgets/settings/settings_language.dart';
 
 class SettingsView extends StatelessWidget {
@@ -19,8 +20,9 @@ class SettingsView extends StatelessWidget {
             maxWidth: MediaQuery.of(context).size.width - 40,
           ),
           child: Column(
-            spacing: 10,
+            spacing: 20,
             children: [
+              SettingsImports(),
               SettingsLanguage(),
             ],
           )),
