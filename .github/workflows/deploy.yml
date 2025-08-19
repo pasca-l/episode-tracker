@@ -1,17 +1,23 @@
-name: deploy "Flutter App" flutter project to GitHub Pages
+name: deploy Flutter project to GitHub Pages
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  id-token: write
+  pages: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 env:
-  app_root: ./app
-  repo_name: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+  APP_ROOT: ./app
+  REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout for workflow to access repository
@@ -23,18 +29,31 @@ jobs:
           channel: "stable"
 
       - name: install packages and test app
-        working-directory: ${{ env.app_root }}
+        working-directory: ${{ env.APP_ROOT }}
         run: |
           flutter pub get
           flutter test
 
       - name: build for web
-        working-directory: ${{ env.app_root }}
+        working-directory: ${{ env.APP_ROOT }}
         run: |
-          flutter build web --base-href /${{ env.repo_name }}/
+          flutter build web --base-href /${{ env.REPO_NAME }}/
 
-      - name: deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ env.app_root }}/build/web
+          path: ${{ env.APP_ROOT }}/build/web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
