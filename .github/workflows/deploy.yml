@@ -14,7 +14,7 @@ concurrency:
 
 env:
   APP_ROOT: ./app
-  REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+  REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
   build:
