@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:app/features/tracker/models/tracker.dart';
 
 class StatsTitleSummaryCard extends StatelessWidget {
-  const StatsTitleSummaryCard(
-      {super.key, required this.tracker, required this.records});
+  const StatsTitleSummaryCard({
+    super.key,
+    required this.tracker,
+    required this.records,
+  });
 
   final Tracker tracker;
   final List<Record> records;

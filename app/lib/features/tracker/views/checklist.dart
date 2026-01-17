@@ -9,10 +9,29 @@ import 'package:app/features/tracker/models/tracker.dart';
 import 'package:app/features/tracker/repositories/tracker.dart';
 import 'package:app/features/tracker/widgets/checklist/checklist_view.dart';
 
-class TrackerChecklist extends StatelessWidget {
+class TrackerChecklist extends StatefulWidget {
   const TrackerChecklist({super.key, required this.tracker});
 
   final Tracker tracker;
+
+  @override
+  State<TrackerChecklist> createState() => _TrackerChecklistState();
+}
+
+class _TrackerChecklistState extends State<TrackerChecklist> {
+  late final TextEditingController _queryController;
+
+  @override
+  void initState() {
+    super.initState();
+    _queryController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _queryController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +39,7 @@ class TrackerChecklist extends StatelessWidget {
       body: Align(
         alignment: Alignment.topCenter,
         child: StreamBuilder<QuerySnapshot>(
-          stream: TrackerRepository.getRecords(tracker),
+          stream: TrackerRepository.getRecords(widget.tracker),
           builder: (
             BuildContext context,
             AsyncSnapshot<QuerySnapshot> snapshot,
@@ -40,7 +59,11 @@ class TrackerChecklist extends StatelessWidget {
                     .toList() ??
                 [];
 
-            return ChecklistView(tracker: tracker, records: records);
+            return ChecklistView(
+              tracker: widget.tracker,
+              records: records,
+              queryController: _queryController,
+            );
           },
         ),
       ),
