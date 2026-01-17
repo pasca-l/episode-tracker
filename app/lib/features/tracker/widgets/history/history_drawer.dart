@@ -2,6 +2,7 @@
 import 'dart:async';
 
 // Flutter imports:
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,6 +25,7 @@ class HistoryDrawer extends StatefulWidget {
 class _HistoryDrawerState extends State<HistoryDrawer> {
   final _formKey = GlobalKey<FormState>();
   late final Map<String, TextEditingController> _controllers;
+  late final ScrollController _scrollController;
   late Timer _timer;
   late int _seasonIndex;
   late MutableRecord _currentRecord;
@@ -38,6 +40,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
 
     _currentRecord = widget.record.toMutableRecord();
     _seasonIndex = widget.record.episode.length - 1;
+    _scrollController = ScrollController();
 
     // initialize with read data
     _controllers = {
@@ -68,6 +71,7 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
     for (var controller in _controllers.values) {
       controller.dispose();
     }
+    _scrollController.dispose();
     _timer.cancel();
   }
 
@@ -149,48 +153,69 @@ class _HistoryDrawerState extends State<HistoryDrawer> {
                     },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      spacing: 5,
-                      children: List<Widget>.generate(
-                          _currentRecord.episode.length + 1, (int index) {
-                        if (index == _currentRecord.episode.length) {
-                          return ActionChip(
-                            label: Text("add season"),
-                            avatar: Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                _currentRecord.episode = [
-                                  ..._currentRecord.episode,
-                                  1
-                                ];
-                                _currentRecord.airedFrom = [
-                                  ..._currentRecord.airedFrom,
-                                  DateTime.now()
-                                ];
-                                _updateEnabled = true;
-                              });
-                            },
+                  Scrollbar(
+                    controller: _scrollController,
+                    child: Listener(
+                      onPointerSignal: (pointerSignal) {
+                        if (pointerSignal is PointerScrollEvent) {
+                          final newOffset = _scrollController.offset +
+                              pointerSignal.scrollDelta.dy;
+                          _scrollController.jumpTo(
+                            newOffset.clamp(
+                              0.0,
+                              _scrollController.position.maxScrollExtent,
+                            ),
                           );
                         }
-                        return ChoiceChip(
-                          label: Text("season ${index + 1}"),
-                          selected: _seasonIndex == index,
-                          onSelected: (_) {
-                            setState(() {
-                              _seasonIndex = index;
-                              _controllers["episode"]!.text = _currentRecord
-                                  .episode[_seasonIndex]
-                                  .toString();
-                              _controllers["aired_from"]!.text = _currentRecord
-                                  .airedFrom[_seasonIndex]
-                                  .toString()
-                                  .substring(0, 10);
-                            });
-                          },
-                        );
-                      }),
+                      },
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Row(
+                            spacing: 5,
+                            children: List<Widget>.generate(
+                                _currentRecord.episode.length + 1, (int index) {
+                              if (index == _currentRecord.episode.length) {
+                                return ActionChip(
+                                  label: Text("add season"),
+                                  avatar: Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      _currentRecord.episode = [
+                                        ..._currentRecord.episode,
+                                        1
+                                      ];
+                                      _currentRecord.airedFrom = [
+                                        ..._currentRecord.airedFrom,
+                                        DateTime.now()
+                                      ];
+                                      _updateEnabled = true;
+                                    });
+                                  },
+                                );
+                              }
+                              return ChoiceChip(
+                                label: Text("season ${index + 1}"),
+                                selected: _seasonIndex == index,
+                                onSelected: (_) {
+                                  setState(() {
+                                    _seasonIndex = index;
+                                    _controllers["episode"]!.text =
+                                        _currentRecord.episode[_seasonIndex]
+                                            .toString();
+                                    _controllers["aired_from"]!.text =
+                                        _currentRecord.airedFrom[_seasonIndex]
+                                            .toString()
+                                            .substring(0, 10);
+                                  });
+                                },
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   TextFormField(
